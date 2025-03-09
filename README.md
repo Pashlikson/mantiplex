@@ -40,7 +40,7 @@ python manage.py collectstatic
 ### Models code:
 1. after configuring models.py file in app you should run this code to change models properties
 ```bash
-python manage.py makemigrations
+ python manage.py makemigrations --name <changed_my_model>
 ``` 
 2. in second, you have to run this command to get models change
 ```bash
