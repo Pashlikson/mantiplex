@@ -3,8 +3,8 @@ from ..utils import get_class_number_by_current_year, convert_hex_number_into_cy
 
 class School_class(models.Model):
     prefix_hex = models.CharField(max_length=4, blank=False)
-    start_year = models.IntegerField(max_length=4, blank=False)
-    room_number = models.IntegerField(max_length=3, blank=False)
+    start_year = models.IntegerField(blank=False)
+    room_number = models.IntegerField(blank=False)
     
     @property
     def class_number(self):
