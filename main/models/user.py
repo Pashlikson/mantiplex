@@ -8,4 +8,4 @@ class User(models.Model):
     email = models.EmailField(max_length=100, blank=False)
     birth_date = models.DateField(blank=False, null=True)
     
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, on_delete=models.PROTECT)

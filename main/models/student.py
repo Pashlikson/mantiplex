@@ -5,6 +5,6 @@ from .school_class import School_class
 
 class Student(models.Model):
     user = models.ForeignKey(User, blank=False, on_delete=models.CASCADE)
-    school_class = models.ForeignKey(School_class, blank=False, on_delete=models.CASCADE)
+    school_class = models.ForeignKey(School_class, blank=False, on_delete=models.PROTECT)
     first_guardian = models.ForeignKey(Parent, blank=False, on_delete=models.CASCADE, related_name='first_guardian')
-    second_guardian = models.ForeignKey(Parent, on_delete=models.CASCADE, related_name='second_guardian')
+    second_guardian = models.ForeignKey(Parent, on_delete=models.PROTECT, related_name='second_guardian')

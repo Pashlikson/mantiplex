@@ -6,6 +6,8 @@ from .models.parent import Parent
 from .models.student import Student
 from .models.teacher import Teacher
 from .models.role import Role
+from .models.event import Event
+from .models.task import Task
 
 # Register your models here.
 admin.site.register(User)
@@ -15,3 +17,5 @@ admin.site.register(Parent)
 admin.site.register(Teacher)
 admin.site.register(Role)
 admin.site.register(School_class_teacher)
+admin.site.register(Event)
+admin.site.register(Task)

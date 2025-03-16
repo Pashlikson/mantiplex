@@ -38,3 +38,20 @@ class TeacherSubject(str, Enum):
     @classmethod
     def choices(cls):
         return [(key.value, key.name) for key in cls]
+    
+class TaskStatus(str, Enum):
+    UNDONE = 'undone'
+    DONE = 'done'
+
+    @classmethod
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
+    
+class EventStatus(str, Enum):
+    PARENT_MEETING = 'Parent meeting'
+    PERSONAL_EVENT = 'Personal event'
+    SCHOOL_EVENT = 'School event'
+
+    @classmethod
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
