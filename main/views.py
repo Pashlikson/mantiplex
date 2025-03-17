@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-from django.contrib import messages
 from .utils import convert_hex_number_into_cyrilic
 
 # Create your views here.
@@ -23,7 +22,7 @@ def login_page(request):
                 login(request, user)
                 return redirect('calendar')
             else:
-                return redirect('register')
+                return redirect('login')
         else:
             return render(request, 'login_page.html')
 
@@ -36,7 +35,6 @@ def register_page(request):
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, ("Registeation Sucsedsful!"))
             return redirect('main')
     else:
         form = UserCreationForm()
