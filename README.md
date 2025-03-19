@@ -54,17 +54,6 @@ python manage.py createsuperuser
 ```
 2. you have to write down an username, email and password
 
-## Tasks, you must perform before 9-th may!!!
-1. Create a database in own device:\
-    1-st: install PostgreSQL\
-    2-nd: create a database named "mantiplex"\
-    3-rd: create a "users", "events" and "tasks" table\
-    4-th: create roles and interactions with tables in database.
-
-2. Change a main.html file to change a main page
-
-3. Read this article and remember codes, it's very important!!!
-
 ## GitHub instruction:
 You can go in this link to get an important git commands:\
 [An GitHub document guide](https://docs.google.com/document/d/1ePXHZpycQqG8ReS46S621vizd7IvUzW-YrazYbT1o9I/edit?tab=t.0#heading=h.tgnriy2ij3q);\

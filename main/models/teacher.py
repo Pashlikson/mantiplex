@@ -4,5 +4,8 @@ from ..enums import TeacherSubject
 
 class Teacher(models.Model):
     user = models.ForeignKey(User, blank=False, on_delete=models.CASCADE)
-    subject = models.CharField(TeacherSubject)
+    subject = models.CharField(choices=TeacherSubject.choices)
     eployment_year = models.IntegerField(blank=False)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
