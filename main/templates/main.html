@@ -4,6 +4,9 @@
   <header>
     <a href="/login" style="color: #fff;">Login</a>
     <a href="/register" style="color: #fff; left: 2cm;">Register</a>
+    {% if request.user.is_staff %}
+      <a href="/admin" style="color: #fff; left: 2cm;">Admin</a>
+    {% endif %}
   </header>
   
 

@@ -9,13 +9,23 @@ from .models.role import Role
 from .models.event import Event
 from .models.task import Task
 
+class RoleAdmin(admin.ModelAdmin):
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        return False
+    
+    def has_add_permission(self, request):
+        return False
+    
 # Register your models here.
 admin.site.register(User)
 admin.site.register(School_class)
 admin.site.register(Student)
 admin.site.register(Parent)
 admin.site.register(Teacher)
-admin.site.register(Role)
+admin.site.register(Role, RoleAdmin)
 admin.site.register(School_class_teacher)
 admin.site.register(Event)
 admin.site.register(Task)
