@@ -9,7 +9,7 @@ class User(models.Model):
     birth_date = models.DateField(blank=False, null=True)
     school = models.CharField(blank=False, null=True)
     
-    role = models.ForeignKey(Role, on_delete=models.PROTECT)
+    role = models.ForeignKey(Role, on_delete=models.PROTECT) #//TODO: Delete role field?
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

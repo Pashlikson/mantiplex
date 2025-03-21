@@ -54,6 +54,17 @@ python manage.py createsuperuser
 ```
 2. you have to write down an username, email and password
 
+## Mark tasks:
+In file, you can set tasks for later work, to not forget, what you want to.
+
+1. To set a task, you have to write down code above:
+
+in python file:
+```bash
+...python code #//TODO: task_description
+```
+2. in search write down 'TODO' and you will find all tasks
+
 ## GitHub instruction:
 You can go in this link to get an important git commands:\
 [An GitHub document guide](https://docs.google.com/document/d/1ePXHZpycQqG8ReS46S621vizd7IvUzW-YrazYbT1o9I/edit?tab=t.0#heading=h.tgnriy2ij3q);\

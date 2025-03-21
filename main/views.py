@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from .utils import convert_hex_number_into_cyrilic
 from main.decorators import unauthanticated_user
 
-# Create your views here.
+# //TODO: In template files, views and urls change page name into better name
 def main_page(request):
     convert = convert_hex_number_into_cyrilic('d093')
     return render(request, 'main.html', {
@@ -25,6 +25,7 @@ def login_page(request):
     else:
         return render(request, 'login_page.html')
 
+#//TODO: custom register user
 @unauthanticated_user
 def register_page(request):
     if request.method == 'POST':
@@ -42,9 +43,30 @@ def register_page(request):
         'form':form,
         })
 
+#//TODO: Add functional to this pages: {--
 def calendar_page(request):
     return render(request, 'calendar_page.html')
 
+def profile_page(request):
+    my_profile = request.user
+    return render(request, 'own_profile.html', {
+        'my_user': my_profile,
+    })
+
+def event(request):
+    return render(request, 'events.html')
+
+def users(request):
+    return render(request, 'users.html')
+
+def user_profile(request):
+    return render(request, 'user_profile.html')
+
+def event_detail(request):
+    return render(request, 'event_detail.html')
+# --}
+
+# Just password
 """
 Admin12345!
 """

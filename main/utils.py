@@ -1,7 +1,7 @@
 from time import localtime
 import codecs
 
-def get_class_number_by_current_year(start_year: int):
+def get_class_number_by_current_year(start_year: int):#//TODO: Shorter name
     result = {"number": 0, "is_graduated": False}
     current_year = localtime()[0]
     
@@ -17,7 +17,7 @@ def get_class_number_by_current_year(start_year: int):
         result["number"] = diff_years + 1
     return result
 
-def convert_hex_number_into_cyrilic(hex_value = str) -> str:
+def convert_hex_number_into_cyrilic(hex_value = str) -> str: #//TODO: Shorter name
     """Converts hex value into cyrillic letters: d090->А, d091->Б, d092->В, d093->Г"""
 
     hex_list = ['d090', 'd091', 'd092', 'd093']

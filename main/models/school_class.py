@@ -2,9 +2,10 @@ from django.db import models
 from ..utils import get_class_number_by_current_year, convert_hex_number_into_cyrilic
 
 class School_class(models.Model):
-    prefix_hex = models.CharField(max_length=4, blank=False, help_text="d090->А, d091->Б, d092->В, d093->Г")
+    prefix_hex = models.CharField(max_length=4, blank=False, help_text="d090->А, d091->Б, d092->В, d093->Г")#//TODO: use converted hex letter 'Hex-cyrilic enum'
     start_year = models.IntegerField(blank=False)
     room_number = models.IntegerField(blank=False)
+    #//TODO: add folder 'school'
     
     @property
     def class_number(self):
