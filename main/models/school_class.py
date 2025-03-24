@@ -1,5 +1,5 @@
 from django.db import models
-from ..utils import get_class_number_by_current_year, convert_hex_number_into_cyrilic
+from ..utils import get_grade_by_start_year, convert_hex_into_cyrilic
 
 class School_class(models.Model):
     prefix_hex = models.CharField(max_length=4, blank=False, help_text="d090->А, d091->Б, d092->В, d093->Г")#//TODO: use converted hex letter 'Hex-cyrilic enum'
@@ -8,15 +8,15 @@ class School_class(models.Model):
     
     @property
     def class_number(self):
-        return get_class_number_by_current_year(self.start_year)
+        return get_grade_by_start_year(self.start_year)
     
     @property
     def prefix_of_class(self):
-        return convert_hex_number_into_cyrilic(self.prefix_hex)
+        return convert_hex_into_cyrilic(self.prefix_hex)
     
     @property
     def is_class_graduated(self):
-        if get_class_number_by_current_year(self.start_year)["is_graduated"]:
+        if get_grade_by_start_year(self.start_year)["is_graduated"]:
             return ", is graduated"
         else:
             return None

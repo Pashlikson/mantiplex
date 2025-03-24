@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title%}User profile{%endblock%}
+{% block title%}User fill profile{%endblock%}
 {% block content%}
 
-<h1>Profile</h1>
+<h1>Fill your profile</h1>
 <form action="{% url 'profile' %}" method=POST>
     {% csrf_token %}
     {{ form.as_p }}
@@ -12,9 +12,13 @@
 
 <br/><br/>
 
+{% if not form.is_valid or not validate_profile_form %}
+ {{ message }}
+{% endif %}
+
 {% if form.errors %}
  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    There was an error with your form...
+    There was error with your form...
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
  </div>
 {% endif %}

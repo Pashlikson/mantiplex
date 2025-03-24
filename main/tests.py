@@ -1,9 +1,9 @@
 from django.test import TestCase
-from main.validators import Calculate
+from main.utils import validate_profile_form
 
 class Test(TestCase):
     def setUp(self):
-        self.grade = Calculate.School_classVaild(2017)
+        self.grade = validate_profile_form('')
 
-    def test_School_class_validator(self):
-        self.assertEqual(self.grade, 8)
+    def test_validator(self):
+        self.assertEqual(self.grade, False)

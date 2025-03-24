@@ -2,16 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login
-from .utils import convert_hex_number_into_cyrilic
+from .utils import convert_hex_into_cyrilic, validate_profile_form
 from main.decorators import unauthanticated_user
 from .forms import ProfileForm
 from main.models.user import User
-from main.models.role import Role
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
-# //TODO: In template files, views and urls change page name into better name
 def main_page(request):
-    convert = convert_hex_number_into_cyrilic('d093')
+    convert = convert_hex_into_cyrilic('d093')
     return render(request, 'main.html', {
         'letter': convert,
     }) 
@@ -29,7 +28,7 @@ def login_page(request):
     else:
         return render(request, 'login_page.html')
     
-@unauthanticated_user
+
 def register_page(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -40,6 +39,8 @@ def register_page(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('profile')
+        else:
+            return render(request, 'profile.html', {'form': form, 'errors': form.errors})
     else:
         form = UserCreationForm()
     return render(request, 'register_page.html', {
@@ -47,27 +48,25 @@ def register_page(request):
         })
 
 def profile(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            form = ProfileForm(request.POST)
-            if form.is_valid():
-                role_id = form.cleaned_data['role']
-                main_user = User(first_name=form.cleaned_data['first_name'], 
-                                last_name=form.cleaned_data['last_name'], 
-                                email=form.cleaned_data['email'], 
-                                role=role_id, 
-                                birth_date=form.cleaned_data['birth_date'], 
-                                auth_user_id=request.user.id
-                                )
-                main_user.save()
-                return redirect('main')
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if form.is_valid() and validate_profile_form(form):
+            print(form.cleaned_data.get('role'))
+            main_user = User(first_name=form.cleaned_data['first_name'], 
+                            last_name=form.cleaned_data['last_name'], 
+                            email=form.cleaned_data['email'], 
+                            role=form.cleaned_data['role'], 
+                            birth_date=form.cleaned_data['birth_date'], 
+                            auth_user_id=request.user.id
+                            )
+            main_user.save()
+            return redirect('main')
         else:
-            form = ProfileForm()
-        return render(request, 'profile.html', {
-            'form': form
-        })
+            message = 'form(s) was filled incorectiy!'
+            return render(request, 'profile.html', {'form': form, 'message': message, 'errors': form.errors})
     else:
-        redirect('login')
+        form = ProfileForm()
+    return render(request, 'profile.html', {'form': form})
 
 #//TODO: Add functional to this pages: {--
 @login_required
@@ -95,7 +94,5 @@ def event_detail(request):
 
 # Just password
 """
-Admin12345!
-
-7F@h3GNiPKeFbiZ
+9n4n3b6-9n52n6ub86n3i249n23n50p6954
 """

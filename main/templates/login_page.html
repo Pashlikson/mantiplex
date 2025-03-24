@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title%}Register user{%endblock%}
+{% block title%}Login user{%endblock%}
 {% block content%}
 
 <h1>Login</h1>
@@ -7,8 +7,8 @@
 <form action="{% url 'login' %}" method=POST>
     {% csrf_token %}
     <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Email</label>
-      <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
+      <label for="usernameInput" class="form-label">Username</label>
+      <input type="text" class="form-control" name="username">
     </div>
     <div class="mb-3">
       <label for="exampleInputPassword1" class="form-label">Password</label>
