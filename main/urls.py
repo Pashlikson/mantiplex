@@ -1,10 +1,10 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [
     path('', views.main_page, name='main'),
     path('login/', views.login_page, name='login'),
+    path('profile/', views.profile, name='profile'),
     path('register/', views.register_page, name='register'),
     path('calendar/', views.calendar_page, name='calendar'),
     path('calendar/your_profile/', views.profile_page, name='profile_page'),

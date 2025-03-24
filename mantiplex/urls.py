@@ -24,7 +24,4 @@ urlpatterns = [
     path('students/', include('students.urls')),
     path('teachers/', include('teachers.urls'))
 ]
-
-# //TODO: Have i work with several aps?
-# //TODO: Open Django file for workout notes ( My work expansion, Website developer tasks )
-# //TODO: in README.md write down meeting decision, project news, plan, ?!test code statement!?, and ??roles?? 
+ 

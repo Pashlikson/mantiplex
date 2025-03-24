@@ -4,7 +4,6 @@ from main.enums import EventStatus
 from .user import User
 
 class Event(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.PROTECT, null=True)#//TODO: set blank = False
     name = models.CharField(max_length=56, blank=False)
     begin_time = models.DateField(blank=False, default=now)
     end_time = models.DateField(blank=False)

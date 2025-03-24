@@ -9,9 +9,22 @@ Right down is a list of a django basic codes, that every should know:\
 ## How to use django?
 
 ### To run project you need:
-1. insatall dependency
+1. setup virtual environment
 ```bash
-pip install
+#windows
+python -m venv venv
+
+.\venv\Scripts\activate
+
+#MacOS/Linux
+python -m venv venv
+
+source venv/bin/activate
+```
+
+2. insatall dependency
+```bash
+pip install -r requirements.txt
 ```
 2. pull the github project
 ```bash
@@ -64,6 +77,20 @@ in python file:
 ...python code #//TODO: task_description
 ```
 2. in search write down 'TODO' and you will find all tasks
+
+## Meeting notus (Actual before 31 march (31.03.2025))
+
+1. Danylo have expanded workout range (all backend, code takeout and frontend and ).
+
+2. Tasks:\
+- For ```Nadya Hordei``` and ```Anna Rotar```
+(Frontend coders): crate look of all the site pages and think, how to let ```Shevchenko Olexsandra``` for work on project.
+
+- For ```Danylo Onchul```(Backend coder): create all base functions and take on myself database work.
+
+- Deadline: all must dane before 31 march.
+
+3. The site structure will oriented on this site: https://sites.google.com/view/my-ideas-for-command-project/%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0-%D1%81%D1%82%D0%BE%D1%80%D1%96%D0%BD%D0%BA%D0%B0
 
 ## GitHub instruction:
 You can go in this link to get an important git commands:\

@@ -1,5 +1,5 @@
 from django.db import models
-from ..enums import UserRole
+from django.contrib.auth.models import User as AuthUser
 from .role import Role
 
 class User(models.Model):
@@ -7,9 +7,9 @@ class User(models.Model):
     last_name = models.CharField(max_length=30, blank=False)
     email = models.EmailField(max_length=100, blank=False)
     birth_date = models.DateField(blank=False, null=True)
-    school = models.CharField(blank=False, null=True)
+    auth_user = models.ForeignKey(AuthUser, blank=False, on_delete=models.CASCADE)
     
-    role = models.ForeignKey(Role, on_delete=models.PROTECT) #//TODO: Delete role field?
+    role = models.ForeignKey(Role, on_delete=models.PROTECT)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
