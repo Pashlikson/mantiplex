@@ -5,8 +5,11 @@
         <a style="text-align: left; text-decoration: solid;" href="/">Додому</a><h2>Mantiplex</h2>
     </header>
     <nav style="height: 100%;">
-          <a href="your_profile/">Акаунт</a>
-          <p><a href="users/">Користувачі</a></p>
+        <p><a href="your_profile/">Акаунт</a></p>
+        <p><a href="users/">Користувачі</a></p>
+        {% if request.user.is_staff %}
+            <p><a href="/admin">Адмін</a></p>
+        {% endif %}
     </nav>
     <article>
     <table style="width:100%; height: 35%; left: 2cm;">

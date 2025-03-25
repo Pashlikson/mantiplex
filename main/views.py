@@ -30,6 +30,7 @@ def login_page(request):
     else:
         return render(request, 'login_page.html')
 
+@unauthanticated_user
 def register_page(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -48,6 +49,7 @@ def register_page(request):
         'form': form
         })
 
+@unauthanticated_user
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST)
@@ -68,6 +70,7 @@ def profile(request):
         form = ProfileForm()
     return render(request, 'profile.html', {'form': form})
 
+@unauthanticated_user
 def student_profile(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -88,6 +91,7 @@ def student_profile(request):
         form = StudentForm()
     return render(request, 'student_profile.html', {'form': form})
 
+@unauthanticated_user
 def parent_profile(request):
     if request.method == 'POST':
         form = ParentForm(request.POST)
@@ -106,6 +110,7 @@ def parent_profile(request):
         form = ParentForm()
     return render(request, 'parent_profile.html', {'form': form})
 
+@unauthanticated_user
 def teacher_profile(request):
     if request.method == 'POST':
         form = TeacherForm(request.POST)

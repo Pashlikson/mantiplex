@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 {% block title%}Mantiplex home page{%endblock%}
 {% block content%}
+{% load static %}
+
   <header>
-    <a href="/login" style="color: #fff;">Login</a>
-    <a href="/register" style="color: #fff; left: 2cm;">Register</a>
-    {% if request.user.is_staff %}
-      <a href="/admin" style="color: #fff; left: 2cm;">Admin</a>
+    <img src="{% static 'Mantiplex_my_logo_pretentent.png' %}" alt="іконка" style="float:left;width:90px;height:90px;">
+    <h2 style=color:#FDEAE0>Mantiplex</h2> 
+    {% if not request.user.is_authenticated %}
+      <button type="button" class="button button1"><a href="/register" style="left: 4cm;">Реєстрація</a></button>
+    {% elif request.user.is_authenticated %}
+      <button type="button" class="button button1"><a href="/login" style="left: 2cm;">Логін</a></button>
     {% endif %}
   </header>
   
-
   <div class="col-md-7">
-    <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It’ll blow your mind.</span></h2>
-    <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
+    <p class="lead"><pre>
+      Mantiplex– це зручна онлайн-платформа для батьків,
+      учнів і вчителів, яка допомагає організувати навчальний 
+      процес. Тут є календар подій, де можна відстежувати розклад
+      занять, контрольні роботи та шкільні заходи.Користувачі можуть 
+      зареєструватися та отримати доступ до особистого кабінету з 
+      розкладом, навчальними матеріалами та системою повідомлень для спілкування.
+    </pre></p>
   </div>
-  <div class="col-md-5">
-    <svg width="1000" height="500" role="img" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-  </div>
-  <!--<p>{{ letter }}</p>-->
-
+  
 {%endblock%}
