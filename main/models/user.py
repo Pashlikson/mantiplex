@@ -7,7 +7,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=30, blank=False)
     email = models.EmailField(max_length=100, blank=False)
     birth_date = models.DateField(blank=False, null=True)
-    auth_user = models.ForeignKey(AuthUser, blank=False, on_delete=models.CASCADE)
+    auth_user_id = models.ForeignKey(AuthUser, blank=False, on_delete=models.CASCADE, null=True)
     
     role = models.ForeignKey(Role, on_delete=models.PROTECT)
 

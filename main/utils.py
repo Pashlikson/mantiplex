@@ -1,3 +1,5 @@
+from django.contrib.auth.models import Group
+from django.shortcuts import redirect
 from time import localtime
 import codecs
 import re
@@ -77,3 +79,15 @@ def validate_profile_form(form) -> bool:
     if not check_role_age_permission('birth_date', 'role'):
         return False
     return True
+
+def redirect_to_profile_by_role(form) -> str:
+    role = str(form.cleaned_data.get('role')).strip()
+    if role == 'student':
+        return 'student'
+    elif role == 'parent':
+        return 'parent'
+    elif role == 'teacher':
+        return 'teacher'
+    else:
+        return 'default_profile'
+        

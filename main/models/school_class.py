@@ -22,5 +22,5 @@ class School_class(models.Model):
             return None
     
     def __str__(self):
-        return f"{'Каб № ' + str(self.room_number) + ';  '} {str(self.class_number['number']) + self.prefix_of_class + self.is_class_graduated}"
+        return f"{'Каб № ' + str(self.room_number) + ';  '} {str(self.class_number['number']) + str(self.prefix_of_class) + str(self.is_class_graduated if self.is_class_graduated else '')}"
     

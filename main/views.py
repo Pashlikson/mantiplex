@@ -1,19 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-# from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login
-from .utils import convert_hex_into_cyrilic, validate_profile_form
+from .utils import convert_hex_into_cyrilic, validate_profile_form, redirect_to_profile_by_role
 from main.decorators import unauthanticated_user
-from .forms import ProfileForm
+from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm
 from main.models.user import User
+from main.models.parent import Parent
+from main.models.teacher import Teacher
+from main.models.student import Student, School_class
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from django.contrib.auth.models import Group
 
 def main_page(request):
     convert = convert_hex_into_cyrilic('d093')
     return render(request, 'main.html', {
         'letter': convert,
-    }) 
+    })
 
 def login_page(request):
     if request.method == 'POST':
@@ -27,7 +29,6 @@ def login_page(request):
             return redirect('login')
     else:
         return render(request, 'login_page.html')
-    
 
 def register_page(request):
     if request.method == 'POST':
@@ -51,48 +52,114 @@ def profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST)
         if form.is_valid() and validate_profile_form(form):
-            print(form.cleaned_data.get('role'))
             main_user = User(first_name=form.cleaned_data['first_name'], 
                             last_name=form.cleaned_data['last_name'], 
                             email=form.cleaned_data['email'], 
                             role=form.cleaned_data['role'], 
                             birth_date=form.cleaned_data['birth_date'], 
-                            auth_user_id=request.user.id
+                            auth_user_id=request.user
                             )
             main_user.save()
-            return redirect('main')
+            return redirect(redirect_to_profile_by_role(form))
         else:
-            message = 'form(s) was filled incorectiy!'
+            message = 'Form(s) were filled incorrectly!'
             return render(request, 'profile.html', {'form': form, 'message': message, 'errors': form.errors})
     else:
         form = ProfileForm()
     return render(request, 'profile.html', {'form': form})
 
-#//TODO: Add functional to this pages: {--
+def student_profile(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            main_user = User.objects.get(auth_user_id=request.user.id)
+            student = Student(user=main_user,
+                              school_class=form.cleaned_data['school_class'],
+                              first_guardian=form.cleaned_data['first_guardian'],
+                              second_guardian=form.cleaned_data['second_guardian'])      
+            student.save()
+            my_group = Group.objects.get(name='Student')
+            my_group.user_set.add(request.user.id)
+            return redirect('main')
+        else:
+            message = 'Form(s) were filled incorrectly!'
+            return render(request, 'student_profile.html', {'form': form, 'message': message, 'errors': form.errors})
+    else:
+        form = StudentForm()
+    return render(request, 'student_profile.html', {'form': form})
+
+def parent_profile(request):
+    if request.method == 'POST':
+        form = ParentForm(request.POST)
+        if form.is_valid():
+            main_user = User.objects.get(auth_user_id=request.user.id)
+            parent = Parent(user=main_user,
+                             job=form.cleaned_data['job'])     
+            parent.save()
+            my_group = Group.objects.get(name='Parent')
+            my_group.user_set.add(request.user.id)
+            return redirect('main')
+        else:
+            message = 'Form(s) were filled incorrectly!'
+            return render(request, 'parent_profile.html', {'form': form, 'message': message, 'errors': form.errors})
+    else:
+        form = ParentForm()
+    return render(request, 'parent_profile.html', {'form': form})
+
+def teacher_profile(request):
+    if request.method == 'POST':
+        form = TeacherForm(request.POST)
+        if form.is_valid():
+            main_user = User.objects.get(auth_user_id=request.user.id)
+            teacher = Teacher(user=main_user,
+                              subject=form.cleaned_data['subject'],      
+                              employment_year=form.cleaned_data['employment_year'])  # Fixed typo here
+            teacher.save()
+            my_group = Group.objects.get(name='Teacher')
+            my_group.user_set.add(request.user.id)
+            return redirect('main')
+        else:
+            message = 'Form(s) were filled incorrectly!'
+            return render(request, 'teacher_profile.html', {'form': form, 'message': message, 'errors': form.errors})
+    else:
+        form = TeacherForm()
+    return render(request, 'teacher_profile.html', {'form': form})
+
 @login_required
 def calendar_page(request):
     return render(request, 'calendar_page.html')
 
+@login_required
 def profile_page(request):
     my_profile = User.objects.filter(first_name=request.user)
     return render(request, 'own_profile.html', {
         'my_user': my_profile,
     })
 
+@login_required
 def users(request):
     return render(request, 'users.html')
 
+@login_required
 def user_profile(request):
     return render(request, 'user_profile.html')
 
+@login_required
 def event(request):
     return render(request, 'events.html')
 
+@login_required
 def event_detail(request):
     return render(request, 'event_detail.html')
-# --}
+
 
 # Just password
 """
-9n4n3b6-9n52n6ub86n3i249n23n50p6954
+c6{00}3=2=4&(#y^$UE$)
+
+75by348b559nini54b[63b6y]
+
+yrecycwtn85v76;4b8
+
+8n4n3w95um;uy4bme6[i054m0]
 """
