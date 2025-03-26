@@ -1,35 +1,21 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login
-from .utils import convert_hex_into_cyrilic, validate_profile_form, redirect_to_profile_by_role
-from main.decorators import unauthanticated_user
-from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm
+from django.shortcuts import render, redirect
+
 from main.models.user import User
 from main.models.parent import Parent
 from main.models.teacher import Teacher
-from main.models.student import Student, School_class
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
+from main.models.student import Student
+from .validators import profile_validation, redirect_profile_by_role,\
+                        student_validation, parent_check, teacher_validation
+from .decorators import unauthanticated_user
+from .utils import convert_hex_into_cyrilic
+from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm
 
-def main_page(request):
-    convert = convert_hex_into_cyrilic('d093')
-    return render(request, 'main.html', {
-        'letter': convert,
-    })
 
-def login_page(request):
-    if request.method == 'POST':
-        password = request.POST['password']
-        username = request.POST['username']
-        user = authenticate(request, password=password, username=username)
-        if user is not None:
-            login(request, user)
-            return redirect('calendar')
-        else:
-            return redirect('login')
-    else:
-        return render(request, 'login_page.html')
-
+# register views:
 @unauthanticated_user
 def register_page(request):
     if request.method == 'POST':
@@ -53,7 +39,7 @@ def register_page(request):
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST)
-        if form.is_valid() and validate_profile_form(form):
+        if form.is_valid() and profile_validation(form):
             main_user = User(first_name=form.cleaned_data['first_name'], 
                             last_name=form.cleaned_data['last_name'], 
                             email=form.cleaned_data['email'], 
@@ -62,7 +48,7 @@ def profile(request):
                             auth_user_id=request.user
                             )
             main_user.save()
-            return redirect(redirect_to_profile_by_role(form))
+            return redirect(redirect_profile_by_role(form))
         else:
             message = 'Form(s) were filled incorrectly!'
             return render(request, 'profile.html', {'form': form, 'message': message, 'errors': form.errors})
@@ -74,8 +60,8 @@ def profile(request):
 def student_profile(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
-        if form.is_valid():
-            main_user = User.objects.get(auth_user_id=request.user.id)
+        main_user = User.objects.get(auth_user_id=request.user.id)
+        if form.is_valid() and student_validation(form, main_user):
             student = Student(user=main_user,
                               school_class=form.cleaned_data['school_class'],
                               first_guardian=form.cleaned_data['first_guardian'],
@@ -85,6 +71,7 @@ def student_profile(request):
             my_group.user_set.add(request.user.id)
             return redirect('main')
         else:
+            print(student_validation(form, main_user))
             message = 'Form(s) were filled incorrectly!'
             return render(request, 'student_profile.html', {'form': form, 'message': message, 'errors': form.errors})
     else:
@@ -102,6 +89,8 @@ def parent_profile(request):
             parent.save()
             my_group = Group.objects.get(name='Parent')
             my_group.user_set.add(request.user.id)
+            if not parent_check(form):
+                return redirect('teacher')
             return redirect('main')
         else:
             message = 'Form(s) were filled incorrectly!'
@@ -114,11 +103,11 @@ def parent_profile(request):
 def teacher_profile(request):
     if request.method == 'POST':
         form = TeacherForm(request.POST)
-        if form.is_valid():
-            main_user = User.objects.get(auth_user_id=request.user.id)
+        main_user = User.objects.get(auth_user_id=request.user.id)
+        if form.is_valid() and teacher_validation(form, main_user):
             teacher = Teacher(user=main_user,
                               subject=form.cleaned_data['subject'],      
-                              employment_year=form.cleaned_data['employment_year'])  # Fixed typo here
+                              employment_year=form.cleaned_data['employment_year'])
             teacher.save()
             my_group = Group.objects.get(name='Teacher')
             my_group.user_set.add(request.user.id)
@@ -130,6 +119,28 @@ def teacher_profile(request):
         form = TeacherForm()
     return render(request, 'teacher_profile.html', {'form': form})
 
+# login view
+def login_page(request):
+    if request.method == 'POST':
+        password = request.POST['password']
+        username = request.POST['username']
+        user = authenticate(request, password=password, username=username)
+        if user is not None:
+            login(request, user)
+            return redirect('calendar')
+        else:
+            return redirect('login')
+    else:
+        return render(request, 'login_page.html')
+
+# main view
+def main_page(request):
+    convert = convert_hex_into_cyrilic('d093')
+    return render(request, 'main.html', {
+        'letter': convert,
+    })
+
+# calendar views
 @login_required
 def calendar_page(request):
     return render(request, 'calendar_page.html')
@@ -167,4 +178,6 @@ c6{00}3=2=4&(#y^$UE$)
 yrecycwtn85v76;4b8
 
 8n4n3w95um;uy4bme6[i054m0]
+
+6974yu23n6u5n0[6n953]
 """
