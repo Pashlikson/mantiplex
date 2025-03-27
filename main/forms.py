@@ -1,8 +1,7 @@
 from django import forms
 from main.models.role import Role
-from main.models.student import Student, School_class
+from main.models.student import School_class
 from main.models.parent import Parent
-from main.models.teacher import Teacher
 from main.enums import TeacherSubject
 
 class ProfileForm(forms.Form):

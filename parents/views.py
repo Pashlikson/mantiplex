@@ -1,5 +1,5 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 
 # Create your views here.
 def start_page(request):
-    return HttpResponse('Hello, parents!')
+    return render(request, 'parent_page.html')

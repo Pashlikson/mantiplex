@@ -147,7 +147,7 @@ def calendar_page(request):
 
 @login_required
 def profile_page(request):
-    my_profile = User.objects.filter(first_name=request.user)
+    my_profile = User.objects.get(auth_user_id=request.user.id)
     return render(request, 'own_profile.html', {
         'my_user': my_profile,
     })

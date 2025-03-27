@@ -1,8 +1,6 @@
-from django.contrib.auth.models import User as auth_user
 from main.models.school_class import School_class
 from main.models.user import User
 from main.models.parent import Parent
-from main.models.teacher import Teacher
 from .utils import get_grade_by_start_year
 from time import localtime
 import re
