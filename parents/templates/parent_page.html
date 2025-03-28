@@ -1,5 +1,8 @@
-{% extends "base.html" %}
+{% extends "parent_base.html" %}
 {% block title%}Mantiplex home page{%endblock%}
 {% block content%}
-    <p>none</p>
+    <header>
+        Parent page
+    </header>
+    <p>You are: {{ parent }}</p>
 {%endblock%}

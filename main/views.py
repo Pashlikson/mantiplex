@@ -11,7 +11,7 @@ from main.models.student import Student
 from .validators import profile_validation, redirect_profile_by_role,\
                         student_validation, parent_check, teacher_validation
 from .decorators import unauthanticated_user
-from .utils import convert_hex_into_cyrilic
+from .utils import convert_hex_into_cyrilic, filter_by_role
 from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm
 
 
@@ -147,9 +147,11 @@ def calendar_page(request):
 
 @login_required
 def profile_page(request):
-    my_profile = User.objects.get(auth_user_id=request.user.id)
+    my_profile = filter_by_role(request.user.id)
     return render(request, 'own_profile.html', {
-        'my_user': my_profile,
+        'my_user': my_profile['user'],
+        'role': str(my_profile['user'].role),
+        'role_user': my_profile['role_user']
     })
 
 @login_required

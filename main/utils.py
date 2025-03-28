@@ -26,3 +26,21 @@ def convert_hex_into_cyrilic(hex_value = str) -> str:
     else:
         cyrilic_result = codecs.decode(hex_value, 'hex').decode('utf-8')
         return cyrilic_result
+    
+
+def filter_by_role(user_id):
+    from .models.user import User
+    from .models.parent import Parent
+    from .models.teacher import Teacher
+    from .models.student import Student
+
+    user = User.objects.get(auth_user_id=user_id)
+    if str(user.role) == 'parent':
+        role_user = Parent.objects.get(user=user.id)
+        return {'user': user, 'role_user': role_user}
+    if str(user.role) == 'teacher':
+        role_user = Teacher.objects.get(user=user.id)
+        return {'user': user, 'role_user': role_user}
+    if str(user.role) == 'student':
+        role_user = Student.objects.get(user=user.id)
+        return {'user': user, 'role_user': role_user}

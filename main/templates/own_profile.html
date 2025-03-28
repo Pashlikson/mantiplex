@@ -1,10 +1,33 @@
 {% extends "base.html" %}
-{% block title%}Main calendar{%endblock%}
+{% block title%}Профіль{%endblock%}
 {% block content%}
-    <nav><article><header>
-        <p>None</p>
+    <header>
+        <p>Ваш профіль</p>
     </header>
-    <p>your profile: {{ my_user }}</p>
-    <a href="/calendar">back</a>
-    </article></nav>
+    <nav>
+        <a href="/calendar">До календаря</a>
+        {% if request.user.is_staff %}
+            <a href="/admin">Адмін</a>
+        {% endif %}
+    </nav>
+    <article>
+        <h1>Ваш профіль</h1>
+
+        <p>first name: {{ my_user.first_name }}</p>
+        <p>last name: {{ my_user.last_name }}</p>
+        <p>email: {{ my_user.email }}</p>
+        <p>birth date: {{ my_user.birth_date }}</p>
+        <p>role: {{ my_user.role }}</p>
+        {% if role == 'parent' %}
+            <p>job: {{ role_user.job }}</p>
+        {% elif role == 'teacher' %}
+            <p>subject: {{ role_user.subject }}</p>
+            <p>employment year: {{ role_user.employment_year }}</p>
+        {% else %}
+            <p>school class: {{ role_user.school_class }}</p>
+            <p>first guardian: {{ role_user.first_guardian }}</p>
+            <p>second guardian: {{ role_user.second_guardian }}</p>
+        {% endif %}
+    </article>
+
 {%endblock%}

@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% block title%}Main calendar{%endblock%}
 {% block content%}
-    <nav><article><header>
+    <header>
         <p>Event:</p>
     </header>
-    <p>Event detail</p>
-    <a href="/calendar">back</a>
-    <a href="{% url 'event' %}">To events</a>
-    </article></nav>
+    <nav>
+    </nav>
+    <article>
+        <p>Event detail</p>
+        <a href="/calendar">back</a>
+        <a href="{% url 'event' %}">To events</a>
+    </article>
 {%endblock%}
