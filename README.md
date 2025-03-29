@@ -102,7 +102,7 @@ in python file:
 
 4. If frontend needs speed up to high, Danylo Onchul will help in frontend
 
-5. ```In few days, Shevchenko Olexandra, Hordei Nadya and Anna Rotar, you have to learn, how to connect and use git programm\
+5. ```In few days, Shevchenko Olexandra, Hordei Nadya and Anna Rotar, you have to learn, how to connect and use git programm
   to be able to pull and push our project and commit changes```
 
 ## GitHub instruction:
