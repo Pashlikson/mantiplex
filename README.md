@@ -94,13 +94,13 @@ in python file:
 
 ## Meeting notus for 28 march
 
-1. Pavlo Petrovych will send pages for you, Hordei Nadya and Anna Rotar
+1. Pavlo Petrovych will send pages for you, ```Hordei Nadya``` and ```Anna Rotar```
 
-2. Shevchenko Olexandra will work in IT cabinet on school
+2. ```Shevchenko Olexandra``` will work in IT cabinet on school
 
-3. Tasks for our project is in ```[Grade criteria](https://docs.google.com/document/d/1jGJefZRTWWfKG_7RqIrMCTUdL4VjPzPFYqEYC8TbG4Y/edit?tab=t.0)``` for healthy work, here will be criteria to check later.
+3. Tasks for our project is in [Grade criteria](https://docs.google.com/document/d/1jGJefZRTWWfKG_7RqIrMCTUdL4VjPzPFYqEYC8TbG4Y/edit?tab=t.0) for healthy work, here will be criteria to check later.
 
-4. If frontend needs speed up to high, Danylo Onchul will help in frontend
+4. If frontend needs speed up to high, ```Danylo Onchul``` will help in frontend
 
 5. ```In few days, Shevchenko Olexandra, Hordei Nadya and Anna Rotar, you have to learn, how to connect and use git programm to be able to pull and push our project and commit changes```
 
