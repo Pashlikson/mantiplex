@@ -16,16 +16,23 @@ def get_grade_by_start_year(start_year: int):
         result["number"] = diff_years + 1
     return result
 
+class HexLetterConventor:
+    def convert_cyrilic_into_hex(letter_value) -> tuple:
+        """Converts cyrillic letters value into hex: А->d090, Б->d091, В->d092, Г->d093"""
 
-def convert_hex_into_cyrilic(hex_value = str) -> str:
-    """Converts hex value into cyrillic letters: d090->А, d091->Б, d092->В, d093->Г"""
+        hex_result = codecs.encode(str(letter_value).encode('utf-8'), 'hex').decode('utf-8') 
+        print(hex_result)
+        return hex_result
+        
+    def convert_hex_into_cyrilic(hex_value = str) -> str:
+        """Converts hex value into cyrillic letters: d090->А, d091->Б, d092->В, d093->Г"""
 
-    hex_list = ['d090', 'd091', 'd092', 'd093']
-    if hex_value not in hex_list:
-        raise ValueError('You enteted a wrong hex number; so you can use theese hex values: d090, d091, d092, d093')
-    else:
-        cyrilic_result = codecs.decode(hex_value, 'hex').decode('utf-8')
-        return cyrilic_result
+        hex_list = ['d090', 'd091', 'd092', 'd093']
+        if hex_value not in hex_list:
+            raise ValueError('You enteted a wrong hex number; so you can use theese hex values: d090, d091, d092, d093')
+        else:
+            cyrilic_result = codecs.decode(hex_value, 'hex').decode('utf-8')
+            return cyrilic_result
     
 
 def filter_by_role(user_id):

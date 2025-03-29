@@ -1,14 +1,22 @@
 {% extends "base.html" %}
-{% block title%}Main calendar{%endblock%}
+{% block title%}Користувачі{%endblock%}
 {% block content%}
     <header>
-        <p>Users:</p>
+        <p>Користувачі</p>
     </header>
     <nav>
+        <a href="/calendar">До календаря</a>
     </nav>
     <article>
         <p>here will be an list of users</p>
-        <a href="/calendar">back</a>
-        <a href="user_profile/">any User</a>
+        {% for user in users %}     
+          <a href="{{ user.id }}">
+            <p class="lead">
+                {{ user.first_name }}
+                {{ user.last_name }}
+                {{ user.role }}
+            </p>
+        </a>
+        {% endfor %}
     </article>
 {%endblock%}

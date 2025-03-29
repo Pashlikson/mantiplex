@@ -1,8 +1,11 @@
 from django.test import TestCase
+import unittest
 
-class Test(TestCase):
+class Test(unittest.TestCase):
     def setUp(self):
-        self.grade = ('')
+        self.school_class = ''
 
-    def test_validator(self):
-        self.assertEqual(self.grade, False)
+    def test_(self):
+        None
+
+

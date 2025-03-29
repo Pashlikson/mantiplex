@@ -13,6 +13,7 @@ urlpatterns = [
     path('calendar/your_profile/', views.profile_page, name='profile_page'),
     path('calendar/events_1st_march/', views.event, name='event'),
     path('calendar/users/', views.users, name='users'), 
-    path('calendar/users/user_profile/', views.user_profile, name='user_profile'),
-    path('calendar/events_1st_march/event_detail/', views.event_detail, name='event_detail')
+    path('calendar/users/<int:id>/', views.user_profile, name='user_profile'),
+    path('calendar/events_1st_march/my_event/<int:id>/', views.event_detail, name='event_detail'),
+    path('calendar/events_1st_march/my_task/<int:id>/', views.task_detail, name='task_detail')
 ]

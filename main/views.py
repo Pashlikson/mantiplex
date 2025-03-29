@@ -8,10 +8,12 @@ from main.models.user import User
 from main.models.parent import Parent
 from main.models.teacher import Teacher
 from main.models.student import Student
+from main.models.event import Event
+from main.models.task import Task
 from .validators import profile_validation, redirect_profile_by_role,\
                         student_validation, parent_check, teacher_validation
 from .decorators import unauthanticated_user
-from .utils import convert_hex_into_cyrilic, filter_by_role
+from .utils import HexLetterConventor, filter_by_role
 from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm
 
 
@@ -135,7 +137,7 @@ def login_page(request):
 
 # main view
 def main_page(request):
-    convert = convert_hex_into_cyrilic('d093')
+    convert = HexLetterConventor.convert_hex_into_cyrilic(hex_value='d093')
     return render(request, 'main.html', {
         'letter': convert,
     })
@@ -156,30 +158,27 @@ def profile_page(request):
 
 @login_required
 def users(request):
-    return render(request, 'users.html')
+    users = User.objects.all()
+    return render(request, 'users.html', {'users': users})
 
 @login_required
-def user_profile(request):
-    return render(request, 'user_profile.html')
+def user_profile(request, id):
+    user_profile = User.objects.get(id=id)
+    print(user_profile)
+    return render(request, 'user_profile.html', {'user': user_profile})
 
 @login_required
 def event(request):
-    return render(request, 'events.html')
+    events = Event.objects.all()
+    tasks = Task.objects.all()
+    return render(request, 'events.html', {'events': events, 'tasks': tasks})
 
 @login_required
-def event_detail(request):
-    return render(request, 'event_detail.html')
+def event_detail(request, id):
+    my_event = Event.objects.get(id=id)
+    return render(request, 'event_detail.html', {'my_event': my_event})
 
-
-# Just password
-"""
-c6{00}3=2=4&(#y^$UE$)
-
-75by348b559nini54b[63b6y]
-
-yrecycwtn85v76;4b8
-
-8n4n3w95um;uy4bme6[i054m0]
-
-6974yu23n6u5n0[6n953]
-"""
+@login_required
+def task_detail(request, id):
+    my_task = Task.objects.get(id=id)
+    return render(request, 'task_detail.html', {'my_task': my_task})

@@ -1,4 +1,5 @@
 from enum import Enum
+from .utils import HexLetterConventor
 
 class UserRole(str, Enum):
     STUDENT = 'Student'
@@ -51,6 +52,16 @@ class EventStatus(str, Enum):
     PARENT_MEETING = 'Parent meeting'
     PERSONAL_EVENT = 'Personal event'
     SCHOOL_EVENT = 'School event'
+
+    @classmethod
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
+    
+class HexPrefix(str, Enum):
+    A = 'А'
+    Б = 'Б'
+    В = 'В'
+    Г = 'Г'
 
     @classmethod
     def choices(cls):

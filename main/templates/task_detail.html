@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title%}Завдання{%endblock%}
+{% block content%}
+    <header>
+        <p>Мої завдання:</p>
+    </header>
+    <nav>
+        <a href="/calendar">До календаря</a>
+        <p><a href="{% url 'event' %}">До подій та завдань</a></p>
+    </nav>
+    <article>
+        <p>Task detail</p>
+        <p>name: {{ my_task.name }}</p>
+        <p>begin_time: {{ my_task.begin_time }}</p>
+        <p>end_time: {{ my_task.end_time }}</p>
+        <p>context: {{ my_task.context }}</p>
+        <p>status: {{ my_task.status }}</p>
+    </article>
+{%endblock%}

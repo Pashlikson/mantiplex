@@ -1,14 +1,28 @@
 {% extends "base.html" %}
-{% block title%}Main calendar{%endblock%}
+{% block title%}Події та завдання{%endblock%}
 {% block content%}
     <header>
-        <p>Events:</p>
+        <p>Події та завдання</p>
     </header>
     <nav>
+        <a href="/calendar">До календаря</a>
     </nav>
     <article>
-        <p>here will be an event</p>
-        <a href="/calendar">back</a>
-        <a href="event_detail/">detail</a>
+        <h3>here will be an event</h3>
+        {% for event in events %}
+            {% if event.creator.auth_user_id_id == request.user.id %}
+                <a href="my_event/{{ event.id }}">{{ event.name }}: {{ event.begin_time }} - {{ event.end_time }}</a>
+            {% else %}
+                <p>{{ event.name }}: {{ event.begin_time }} - {{ event.end_time }}</p>
+            {% endif %}
+        {% endfor %}
+        <h3>here will be an task</h3>
+        {% for task in tasks %}
+            {% if task.creator.auth_user_id_id == request.user.id %}
+                <a href="my_task/{{ task.id }}">{{ task.name }}: {{ task.begin_time }} - {{ task.end_time }}</a>
+            {% else %}
+                <p>{{ task.name }}: {{ task.begin_time }} - {{ task.end_time }}</p>
+            {% endif %}
+        {% endfor %}
     </article>
 {%endblock%}

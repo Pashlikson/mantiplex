@@ -1,8 +1,9 @@
 from django.db import models
-from ..utils import get_grade_by_start_year, convert_hex_into_cyrilic
+from ..utils import get_grade_by_start_year, HexLetterConventor
+from main.enums import HexPrefix
 
 class School_class(models.Model):
-    prefix_hex = models.CharField(max_length=4, blank=False, help_text="d090->А, d091->Б, d092->В, d093->Г")#//TODO: use converted hex letter 'Hex-cyrilic enum'
+    prefix_hex = models.CharField(choices=HexPrefix.choices(),max_length=4, blank=False)#//TODO: use converted hex letter 'Hex-cyrilic enum'
     start_year = models.IntegerField(blank=False)
     room_number = models.IntegerField(blank=False)
     
@@ -12,7 +13,7 @@ class School_class(models.Model):
     
     @property
     def prefix_of_class(self):
-        return convert_hex_into_cyrilic(self.prefix_hex)
+        return HexLetterConventor.convert_hex_into_cyrilic(self.prefix_hex)
     
     @property
     def is_class_graduated(self):
@@ -24,3 +25,6 @@ class School_class(models.Model):
     def __str__(self):
         return f"{'Каб № ' + str(self.room_number) + ';  '} {str(self.class_number['number']) + str(self.prefix_of_class) + str(self.is_class_graduated if self.is_class_graduated else '')}"
     
+    def save(self, *args, **kwargs):
+        self.prefix_hex = HexLetterConventor.convert_cyrilic_into_hex(self.prefix_hex)
+        super().save(*args, **kwargs)

@@ -1,14 +1,15 @@
 {% extends "base.html" %}
-{% block title%}Main calendar{%endblock%}
+{% block title%}Профіль користувача{%endblock%}
 {% block content%}
     <header>
-        <p>User:</p>
+        <p>Профіль користувача</p>
     </header>
     <nav>
+        <a href="/calendar">До календаря</a>
+        <p><a href="{% url 'users' %}">До користувачів</a></p>
     </nav>
     <article>
         <p>here will be an user profile</p>
-        <a href="/calendar">back</a>
-        <a href="{% url 'users' %}">To users</a>
+        <h1>{{ user.first_name }} {{ user.last_name }}</h1>
     </article>
 {%endblock%}

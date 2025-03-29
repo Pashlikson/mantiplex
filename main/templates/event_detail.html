@@ -1,14 +1,19 @@
 {% extends "base.html" %}
-{% block title%}Main calendar{%endblock%}
+{% block title%}Події{%endblock%}
 {% block content%}
     <header>
-        <p>Event:</p>
+        <p>Мої події</p>
     </header>
     <nav>
+        <a href="/calendar">До календаря</a>
+        <p><a href="{% url 'event' %}">До подій та завдань</a></p>
     </nav>
     <article>
         <p>Event detail</p>
-        <a href="/calendar">back</a>
-        <a href="{% url 'event' %}">To events</a>
+        <p>name: {{ my_event.name }}</p>
+        <p>begin_time: {{ my_event.begin_time }}</p>
+        <p>end_time: {{ my_event.end_time }}</p>
+        <p>context: {{ my_event.context }}</p>
+        <p>event address: {{ my_event.event_adress }}</p>
     </article>
 {%endblock%}
