@@ -78,7 +78,7 @@ in python file:
 ```
 2. in search write down 'TODO' and you will find all tasks
 
-## Meeting notus (Actual before 31 march (31.03.2025))
+## Meeting notus for 21 march (Actual before 31 march (31.03.2025))
 
 1. Danylo have expanded workout range (all backend, code takeout and frontend and ).
 
@@ -91,6 +91,19 @@ in python file:
 - Deadline: all must be done before 31 march.
 
 3. The site structure will oriented on this site: https://sites.google.com/view/my-ideas-for-command-project/%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0-%D1%81%D1%82%D0%BE%D1%80%D1%96%D0%BD%D0%BA%D0%B0
+
+## Meeting notus for 28 march
+
+1. Pavlo Petrovych will send pages for you, ```Hordei Nadya``` and ```Anna Rotar```
+
+2. ```Shevchenko``` Olexandra will work in IT cabinet on school
+
+3. Tasks for our project is in ```[Grade criteria](https://docs.google.com/document/d/1jGJefZRTWWfKG_7RqIrMCTUdL4VjPzPFYqEYC8TbG4Y/edit?tab=t.0)``` for healthy work, here will be criteria to check later.
+
+4. If frontend needs speed up to high, Danylo Onchul will help in frontend
+
+5. ```In few days, Shevchenko Olexandra, Hordei Nadya and Anna Rotar, you have to learn, how to connect and use git programm\
+  to be able to pull and push our project and commit changes```
 
 ## GitHub instruction:
 You can go in this link to get an important git commands:\
