@@ -6,11 +6,22 @@ django's commands to custon our project.\
 Right down is a list of a django basic codes, that every should know:\
 ```You must read this article to get work with django project!!!```
 
-## How to use django?
+## How to get django project from repository?
+First make sure, you're in vs code and you have installed git
+
+### Claim the project from GitHub:
+1. first you click 'code <>' button and copy the url, that will display in
+
+2. then you find the folder, where you want to paste project in\
+ then click the right mouse and in created widget click button 'Git Bash Here', this will create a new Git terminal
+
+3. in terminal you write 'git clone <cloned url from repository>'
+
+this actions will install a latest version of our project
 
 ### To run project you need:
 1. setup virtual environment
-```bash
+```
 #windows
 python -m venv venv
 
@@ -23,18 +34,23 @@ source venv/bin/activate
 ```
 
 2. insatall dependency
-```bash
+```
 pip install -r requirements.txt
 ```
+
 2. pull the github project
-```bash
+```
 git pull origin main 
 ```
 
 3. run django site
-```bash
+```
 python manage.py runserver
 ```
+
+And now, you will have a git bar you need
+
+## How to use django project?
 
 ### To run a pulled project(means you can configure the project):
 1. just run project with this command
@@ -45,7 +61,7 @@ python manage.py runserver
 
 
 ### Static files code:
-1. after configuring static files you should run this code to get style changed
+1. after configuring static files you should run this code to get style changed (when DEBUG = False)
 ```bash
 python manage.py collectstatic
 ``` 
@@ -67,7 +83,7 @@ python manage.py createsuperuser
 ```
 2. you have to write down an username, email and password
 
-## Mark tasks:
+### Mark tasks:
 In file, you can set tasks for later work, to not forget, what you want to.
 
 1. To set a task, you have to write down code above:
@@ -77,6 +93,8 @@ in python file:
 ...python code #//TODO: task_description
 ```
 2. in search write down 'TODO' and you will find all tasks
+
+## Django commits:
 
 ## Meeting notus for 21 march (Actual before 31 march (31.03.2025))
 
