@@ -15,7 +15,7 @@ First make sure, you're in vs code and you have installed git
 2. then you find the folder, where you want to paste project in\
  then click the right mouse and in created widget click button 'Git Bash Here', this will create a new Git terminal
 
-3. in terminal you write 'git clone <cloned url from repository>'
+3. in terminal you write 'git clone "cloned url from repository"'
 
 this actions will install a latest version of our project
 
