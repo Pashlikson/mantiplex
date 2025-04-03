@@ -1,27 +1,25 @@
-{% extends "base.html" %}
+{% extends "common/base.html" %}
+{% load static %}
 {% block title%}Mantiplex home page{%endblock%}
 {% block content%}
-{% load static %}
 
-  <header>
-    <img src="{% static 'Mantiplex_my_logo_pretentent.png' %}" alt="іконка" style="float:left;width:90px;height:90px;">
-    <h2 style=color:#FDEAE0>Mantiplex</h2> 
-    {% if not request.user.is_authenticated %}
-      <button type="button" class="button button1"><a href="/register" style="left: 4cm;">Реєстрація</a></button>
-    {% elif request.user.is_authenticated %}
-      <button type="button" class="button button1"><a href="/login" style="left: 2cm;">Логін</a></button>
-    {% endif %}
-  </header>
-  
-  <div class="col-md-7">
-    <p class="lead"><pre>
+<img src="{% static 'Mantiplex_my_logo_pretentent.png' %}" alt="іконка" style="float:left;width:90px;height:90px;">
+<h2 style=color:#FDEAE0>Mantiplex</h2> 
+{% if not request.user.is_authenticated %}
+  <button type="button" class="button button1"><a href="/register" style="left: 4cm;">Реєстрація</a></button>
+{% elif request.user.is_authenticated %}
+  <button type="button" class="button button1"><a href="/login" style="left: 2cm;">Логін</a></button>
+{% endif %}
+
+<div class="col-md-7">
+    <p class="pt-5 text-center">
       Mantiplex– це зручна онлайн-платформа для батьків,
       учнів і вчителів, яка допомагає організувати навчальний 
       процес. Тут є календар подій, де можна відстежувати розклад
       занять, контрольні роботи та шкільні заходи. Користувачі можуть 
       зареєструватися та отримати доступ до особистого кабінету з 
       розкладом, навчальними матеріалами та системою повідомлень для спілкування.
-    </pre></p>
-  </div>
+    </p>
+</div>
   
 {%endblock%}

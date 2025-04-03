@@ -3,9 +3,8 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.school_class = ''
+        self.month = ''
 
     def test_(self):
-        None
-
+        pass
 

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
@@ -13,12 +14,11 @@ from main.models.task import Task
 from .validators import profile_validation, redirect_profile_by_role,\
                         student_validation, parent_check, teacher_validation
 from .decorators import unauthanticated_user
-from .utils import HexLetterConventor, filter_by_role
+from .utils import HexLetterConventor, ConvertDatetime, filter_by_role
 from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm
 
-
 # register views:
-@unauthanticated_user
+# @unauthanticated_user
 def register_page(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -37,7 +37,7 @@ def register_page(request):
         'form': form
         })
 
-@unauthanticated_user
+# @unauthanticated_user
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST)
@@ -58,7 +58,7 @@ def profile(request):
         form = ProfileForm()
     return render(request, 'profile.html', {'form': form})
 
-@unauthanticated_user
+# @unauthanticated_user
 def student_profile(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -80,7 +80,7 @@ def student_profile(request):
         form = StudentForm()
     return render(request, 'student_profile.html', {'form': form})
 
-@unauthanticated_user
+# @unauthanticated_user
 def parent_profile(request):
     if request.method == 'POST':
         form = ParentForm(request.POST)
@@ -101,7 +101,7 @@ def parent_profile(request):
         form = ParentForm()
     return render(request, 'parent_profile.html', {'form': form})
 
-@unauthanticated_user
+# @unauthanticated_user
 def teacher_profile(request):
     if request.method == 'POST':
         form = TeacherForm(request.POST)
@@ -145,7 +145,28 @@ def main_page(request):
 # calendar views
 @login_required
 def calendar_page(request):
-    return render(request, 'calendar_page.html')
+    weeks = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд']
+
+    current_month = datetime.now().month
+    current_year = datetime.now().year 
+    current_day = datetime.now().day
+    
+    selected_year = int(request.GET.get('year', current_year))
+    selected_month_index = int(request.GET.get('month', current_month))
+    selected_month_title = ConvertDatetime.convert_months(selected_month_index)
+    selected_days = ConvertDatetime.convert_current_day(selected_year, selected_month_index)
+    is_selected_month_current = selected_month_index == current_month and selected_year == current_year
+
+    return render(request, 'calendar_page.html', {
+        'current_year': current_year, 
+        'current_month': ConvertDatetime.convert_months(current_month), 
+        'current_day': current_day,
+        'weeks': weeks, 
+        'selected_year': selected_year,
+        'selected_month': selected_month_title,
+        'selected_days': selected_days,
+        'is_selected_month_current': is_selected_month_current,
+        })
 
 @login_required
 def profile_page(request):

@@ -1,4 +1,5 @@
 from time import localtime
+import calendar
 import codecs
 
 def get_grade_by_start_year(start_year: int):
@@ -51,3 +52,55 @@ def filter_by_role(user_id):
     if str(user.role) == 'student':
         role_user = Student.objects.get(user=user.id)
         return {'user': user, 'role_user': role_user}
+    
+
+class ConvertDatetime:
+    def convert_current_day(year: int, month: int) -> list:
+        first_week_day, count_month_days = calendar.monthrange(year, month)
+        weeks = []
+        week = [''] * first_week_day
+
+        for day in range(1, count_month_days+1):
+            week.append(day)
+            if len(week) == 7:
+                weeks.append(tuple(week))
+                week = []
+
+        if week:
+            week.extend([''] * (7 - len(week)))
+            weeks.append(tuple(week))
+
+        return tuple(weeks)
+
+    def convert_months(month: int):
+        months = {
+            1: 'Січень', 2: 'Лютий', 3: 'Березень',
+            4: 'Квітень', 5: 'Травень', 6: 'Червень',
+            7: 'Липень', 8: 'Серпень', 9: 'Вересень',
+            10: 'Жовтень', 11: 'Листопад', 12: 'Грудень'
+        }
+        return months.get(month, ' ')
+
+    def return_year_like_list(year):
+        months = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень']
+    
+        month_data = []
+        
+        for month in range(1, 13):
+            first_day_of_month, num_days_in_month = calendar.monthrange(year, month)
+            
+            weeks = []
+            week = [' ']*first_day_of_month  
+            
+            for day in range(1, num_days_in_month + 1):
+                week.append(day)
+                if len(week) == 7:  
+                    weeks.append(week)
+                    week = []
+            
+            if week:
+                weeks.append(week + [' '] * (7 - len(week)))  
+            
+            month_data.append(weeks)
+        
+        return months, month_data
