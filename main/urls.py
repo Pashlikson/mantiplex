@@ -16,9 +16,4 @@ urlpatterns = [
     path('calendar/users/<int:id>/', views.user_profile, name='user_profile'),
     path('calendar/event/', views.event, name='event'),
     path('calendar/event/<int:id>/', views.event_detail, name='event_detail'),
-    # path('calendar/events_1st_march/my_task/<int:id>/', views.task_detail, name='task_detail'),
-    # path('calendar/event/add_event/', views.add_event, name='add_event'),
-    # path('calendar/event/change_event/<int:id>/', views.change_event, name='change_event'),
-
-    # path('/event', views.event, name='event'),
 ]

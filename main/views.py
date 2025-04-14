@@ -13,12 +13,12 @@ from main.models.event import Event
 from main.models.task import Task
 from .validators import profile_validation, redirect_profile_by_role,\
                         student_validation, parent_check, teacher_validation
-# from .decorators import unauthanticated_user
+from .decorators import unauthanticated_user
 from .utils import HexLetterConventor, ConvertDatetime, filter_by_role
 from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm, EventForm
 
 # register views:
-# @unauthanticated_user
+@unauthanticated_user
 def register_page(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -37,7 +37,7 @@ def register_page(request):
         'form': form
         })
 
-# @unauthanticated_user
+@unauthanticated_user
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST)
@@ -58,7 +58,7 @@ def profile(request):
         form = ProfileForm()
     return render(request, 'profile.html', {'form': form})
 
-# @unauthanticated_user
+@unauthanticated_user
 def student_profile(request):
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -80,7 +80,7 @@ def student_profile(request):
         form = StudentForm()
     return render(request, 'student_profile.html', {'form': form})
 
-# @unauthanticated_user
+@unauthanticated_user
 def parent_profile(request):
     if request.method == 'POST':
         form = ParentForm(request.POST)
@@ -104,7 +104,7 @@ def parent_profile(request):
         form = ParentForm()
     return render(request, 'parent_profile.html', {'form': form})
 
-# @unauthanticated_user
+@unauthanticated_user
 def teacher_profile(request):
     if request.method == 'POST':
         form = TeacherForm(request.POST)
@@ -242,58 +242,3 @@ def event_detail(request, id):
 def task_detail(request, id):
     my_task = Task.objects.get(id=id)
     return render(request, 'task_detail.html', {'my_task': my_task})
-
-# @login_required
-# def add_event(request):
-#     if request.method == 'POST':
-#         form = EventForm(request.POST)
-#         if form.is_valid():
-#             event = Event(
-#                 creator=User.objects.get(auth_user_id=request.user.id),
-#                 name=form.cleaned_data['event_name'],
-#                 context=form.cleaned_data['event_description'],
-#                 begin_time=form.cleaned_data['begin_time'],
-#                 end_time=form.cleaned_data['end_time'],
-#                 event_adress=form.cleaned_data['adress']
-#             )
-#             event.save()
-#             return redirect('event')
-#     else:
-#         form = EventForm()
-#     return render(request, 'add_event.html', {'form': form})
-
-# @login_required
-# def change_event(request, id):
-#     event = Event.objects.get(id=id)
-#     form = EventForm(request.GET or None)
-#     if request.method == 'POST':
-#         form = EventForm(request.POST)
-#         if form.is_valid():
-#             event = Event(
-#                 creator=User.objects.get(auth_user_id=request.user.id),
-#                 name=form.cleaned_data['event_name'],
-#                 context=form.cleaned_data['event_description'],
-#                 begin_time=form.cleaned_data['begin_time'],
-#                 end_time=form.cleaned_data['end_time'],
-#                 event_adress=form.cleaned_data['adress']
-#             )
-#             event.save()
-#             return redirect('event')
-#     else:
-#         form = EventForm(request.GET)
-#     # if request.method == 'POST':
-#     #     form = EventForm(request.POST)
-#     #     if form.is_valid():
-#     #         event = Event(
-#     #             creator=User.objects.get(auth_user_id=request.user.id),
-#     #             name=form.cleaned_data['event_name'],
-#     #             context=form.cleaned_data['event_description'],
-#     #             begin_time=form.cleaned_data['begin_time'],
-#     #             end_time=form.cleaned_data['end_time'],
-#     #             event_adress=form.cleaned_data['adress']
-#     #         )
-#     #         event.save()
-#     #         return redirect('event')
-#     # else:
-#     #     form = EventForm()
-#     return render(request, 'change_event.html', {'form': form})
