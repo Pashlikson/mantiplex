@@ -1,28 +1,25 @@
 {% extends "common/base.html" %}
 {% block title%}Події та завдання{%endblock%}
 {% block content%}
-    <header>
-        <p>Події та завдання</p>
-    </header>
-    <nav>
-        <a href="/calendar">До календаря</a>
-    </nav>
-    <article>
-        <h3>here will be an event</h3>
-        {% for event in events %}
-            {% if event.creator.auth_user_id_id == request.user.id %}
-                <a href="my_event/{{ event.id }}">{{ event.name }}: {{ event.begin_time }} - {{ event.end_time }}</a>
-            {% else %}
-                <p>{{ event.name }}: {{ event.begin_time }} - {{ event.end_time }}</p>
-            {% endif %}
-        {% endfor %}
-        <h3>here will be an task</h3>
-        {% for task in tasks %}
-            {% if task.creator.auth_user_id_id == request.user.id %}
-                <a href="my_task/{{ task.id }}">{{ task.name }}: {{ task.begin_time }} - {{ task.end_time }}</a>
-            {% else %}
-                <p>{{ task.name }}: {{ task.begin_time }} - {{ task.end_time }}</p>
-            {% endif %}
-        {% endfor %}
-    </article>
+    <h3 class="pt-3">here will be an event</h3>
+    {% for event in events %}
+        {% if event.creator.auth_user_id_id == request.user.id %}
+            <p><a href="{{ event.id }}">{{ event.name }}: {{ event.begin_time }} - {{ event.end_time }}</a></p>
+        {% else %}
+            <p>{{ event.name }}: {{ event.begin_time }} - {{ event.end_time }}</p>
+        {% endif %}
+    {% endfor %}
+    <h3 class="pt-3">here will be an task</h3>
+    {% for task in tasks %}
+        {% if task.creator.auth_user_id_id == request.user.id %}
+            <p><a href="{{ task.id }}">{{ task.name }}: {{ task.begin_time }} - {{ task.end_time }}</a></p>
+        {% else %}
+            <p>{{ task.name }}: {{ task.begin_time }} - {{ task.end_time }}</p>
+        {% endif %}
+    {% endfor %}
+    {% if role != 'parent' %}
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <a href="/calendar/event" style="text-decoration: none; color: white;">Створити подію або завдання</a>
+        </button>
+    {% endif %}
 {%endblock%}

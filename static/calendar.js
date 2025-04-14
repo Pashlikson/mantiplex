@@ -1,7 +1,7 @@
 function setNewMonth(direction) {
     const urlParams = new URLSearchParams(window.location.search);
-    let currentMonth = parseInt(urlParams.get('month')) - 1 ?? new Date().getMonth(); // Months are 0-indexed in JS
-    let currentYear = parseInt(urlParams.get('year')) ?? new Date().getFullYear();
+    let currentMonth = urlParams.get('month') ? parseInt(urlParams.get('month')) : new Date().getMonth(); 
+    let currentYear = urlParams.get('year') ? parseInt(urlParams.get('year')) : new Date().getFullYear();
 
     if (currentMonth === 11 && direction === 1) {
         currentMonth = 0;
@@ -18,7 +18,13 @@ function setNewMonth(direction) {
     window.location.search = urlParams.toString();
 }
 
+function setSelectedDay() {
+    const urlParams = new URLSearchParams(window.location.search);
+}
+
 (function() {
+    window.store = {}
+
     const previous = document.querySelector('.mantiplex-previous-month');
     previous.addEventListener('click', function() {
         setNewMonth(-1);
@@ -27,5 +33,12 @@ function setNewMonth(direction) {
     next.addEventListener('click', function() {
         setNewMonth(1);
     });
-    console.log("Danylko porosia");
+    const selectedDays = document.querySelectorAll('.mantiplex-calendar-day');
+    for (const element of selectedDays) {
+        element.addEventListener('click', function(e) {
+            window.store.selectedDay = e.target.dataset.selectedDay;
+            window.store.selectedMonth = e.target.dataset.selectedMonth;
+            setSelectedDay();
+        });
+    }
 })();

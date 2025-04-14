@@ -1,0 +1,13 @@
+{% extends "common/base.html" %}
+{% block title %}Події та завдання{% endblock %}
+{% block content %}
+
+<!-- ??DELETE__&& -->
+<h1>Add event</h1>
+<form action="{% url 'add_event' %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" class="btn btn-success">Add Event</button>
+</form>
+
+{% endblock %}

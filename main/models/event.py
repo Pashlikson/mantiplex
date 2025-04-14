@@ -10,10 +10,7 @@ class Event(models.Model):
     end_time = models.DateField(blank=False)
     context = models.CharField(max_length=325)
     event_adress = models.CharField(blank=True, default='-')
-    event_status = models.CharField(choices=EventStatus.choices, editable=False)
+    event_status = models.CharField(choices=EventStatus.choices)
 
     def __str__(self):
         return f"{self.name}"
-    
-    def save_():
-        return Event

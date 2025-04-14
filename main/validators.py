@@ -1,9 +1,9 @@
+from time import localtime
+import re
 from main.models.school_class import School_class
 from main.models.user import User
 from main.models.parent import Parent
 from .utils import get_grade_by_start_year
-from time import localtime
-import re
 
 # Validators:
 def profile_validation(form) -> bool:
@@ -137,9 +137,8 @@ def redirect_profile_by_role(form) -> str:
     role = str(form.cleaned_data.get('role')).strip()
     if role == 'student':
         return 'student'
-    elif role == 'parent':
+    if role == 'parent':
         return 'parent'
-    elif role == 'teacher':
+    if role == 'teacher':
         return 'teacher'
-    else:
-        return 'default_profile'
+    return 'default_profile'

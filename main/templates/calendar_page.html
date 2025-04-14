@@ -13,6 +13,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="mantiplex-next-month bi bi-arrow-right-square pointer" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
               </svg>
+              <button type="button" class="btn bth-info" ><a href="event/">Primary</a></button>
         </h1>
         <table class="table">
             <thead>
@@ -26,7 +27,12 @@
                 {% for week in selected_days  %}
                     <tr>
                         {% for day in week %}
-                            <td class="{% if day %}cell-hover{% else %}border-0{% endif %}{% if is_selected_month_current and day == current_day %} mantiplex-current-day-cell{% endif %} fs-4 border text-center">
+                            <td 
+                                class="mantiplex-calendar-day {% if day %}cell-hover{% else %}border-0{% endif %}{% if is_selected_month_current and day == current_day %} mantiplex-current-day-cell{% endif %} fs-4 border text-center"
+                                data-bs-toggle='modal' 
+                                data-bs-target='#exampleModal'
+                                data-selected-day="{{ day }}"
+                                data-selected-month="{{ selected_month }}">
                                 <p>{{ day }}</p>
                             </td>
                         {% endfor %}
@@ -35,5 +41,71 @@
             </tbody>
         </table>
     </div>
+    <!-- modal for events -->
+    <div class="modal fade modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Create an event</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'event' %}" method="post">
+                {% csrf_token %}
+                <div class="row mb-3">
+                  <label for="colFormLabel" class="col-sm-2 col-form-label">Event Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="colFormLabel" placeholder="Name of event" name="name" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="colFormLabel" class="col-sm-2 col-form-label">Status</label>
+                  <div class="col-sm-10">
+                    <select class="form-select col-sm-10" id="inputGroupSelect02" name="status" required>
+                      <option selected value="0">Personal event</option>
+                      <option value="1">School event</option>
+                      <option value="2">Parent meeting</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="colFormLabel" class="col-sm-2 col-form-label">Start date</label>
+                  <div class="col-sm-10">
+                    <input type="date" class="form-control" id="colFormLabel" placeholder="col-form-label" name="start_date" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="colFormLabel" class="col-sm-2 col-form-label">End date</label>
+                  <div class="col-sm-10">
+                    <input type="date" class="form-control" id="colFormLabel" placeholder="col-form-label" name="end_date" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="colFormLabel" class="col-sm-2 col-form-label">Event Adress</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="colFormLabel" placeholder="Event adress" name="address">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="colFormLabel" class="col-sm-2 col-form-label">Link</label>
+                  <div class="col-sm-10">
+                    <input type="url" class="form-control" id="colFormLabel" placeholder="Event link" name="address" pattern="https?://.+">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="colFormLabel" class="col-sm-2 col-form-label">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" id="colFormLabel" placeholder="Event context" name="context" rows="3" required></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <input type="submit" value="Create event" class="btn btn-primary" data-bs-dismiss="modal">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     <script src="{% static 'calendar.js' %}"></script>
 {%endblock%}

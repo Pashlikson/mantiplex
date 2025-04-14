@@ -13,9 +13,9 @@ from main.models.event import Event
 from main.models.task import Task
 from .validators import profile_validation, redirect_profile_by_role,\
                         student_validation, parent_check, teacher_validation
-from .decorators import unauthanticated_user
+# from .decorators import unauthanticated_user
 from .utils import HexLetterConventor, ConvertDatetime, filter_by_role
-from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm
+from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm, EventForm
 
 # register views:
 # @unauthanticated_user
@@ -96,7 +96,10 @@ def parent_profile(request):
             return redirect('main')
         else:
             message = 'Form(s) were filled incorrectly!'
-            return render(request, 'parent_profile.html', {'form': form, 'message': message, 'errors': form.errors})
+            return render(request, 'parent_profile.html', {
+                'form': form, 
+                'message': message, 
+                'errors': form.errors})
     else:
         form = ParentForm()
     return render(request, 'parent_profile.html', {'form': form})
@@ -145,18 +148,20 @@ def main_page(request):
 # calendar views
 @login_required
 def calendar_page(request):
+    """ Calendar page view """
     weeks = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд']
 
     current_month = datetime.now().month
-    current_year = datetime.now().year 
+    current_year = datetime.now().year
     current_day = datetime.now().day
-    
+   
     selected_year = int(request.GET.get('year', current_year))
     selected_month_index = int(request.GET.get('month', current_month))
     selected_month_title = ConvertDatetime.convert_months(selected_month_index)
     selected_days = ConvertDatetime.convert_current_day(selected_year, selected_month_index)
     is_selected_month_current = selected_month_index == current_month and selected_year == current_year
 
+    form = EventForm(request.POST)
     return render(request, 'calendar_page.html', {
         'current_year': current_year, 
         'current_month': ConvertDatetime.convert_months(current_month), 
@@ -166,8 +171,10 @@ def calendar_page(request):
         'selected_month': selected_month_title,
         'selected_days': selected_days,
         'is_selected_month_current': is_selected_month_current,
+        'form': form,
         })
 
+# Your profile views
 @login_required
 def profile_page(request):
     my_profile = filter_by_role(request.user.id)
@@ -177,6 +184,7 @@ def profile_page(request):
         'role_user': my_profile['role_user']
     })
 
+# Users views
 @login_required
 def users(request):
     users = User.objects.all()
@@ -188,11 +196,42 @@ def user_profile(request, id):
     print(user_profile)
     return render(request, 'user_profile.html', {'user': user_profile})
 
+# Events and tasks views
 @login_required
 def event(request):
+    if request.method == 'POST':
+        #logic to create new event
+        form = EventForm(request.POST)
+        if form.is_valid():
+            event = Event(
+            creator=User.objects.get(auth_user_id=request.user.id),
+            name=form.cleaned_data['name'],
+            begin_time=form.cleaned_data['start_date'],
+            end_time=form.cleaned_data['end_date'],
+            context=form.cleaned_data['context'],
+            event_adress=form.cleaned_data['address'],
+            event_status=form.cleaned_data['status']
+            )
+            event.save()
+            return redirect('calendar')
+        else:
+            return redirect('calendar')
+    elif request.method == 'PUT':
+        #logic to update event by id
+        pass
+    elif request.method == 'DELETE':
+        pass
+    elif request.method == 'GET':
+        if request.GET.get('id'):
+            pass
+        else:
+            pass
+    my_profile = User.objects.get(auth_user_id=request.user.id).role
     events = Event.objects.all()
     tasks = Task.objects.all()
-    return render(request, 'events.html', {'events': events, 'tasks': tasks})
+    return render(
+        request,
+        'events.html', {'events': events, 'tasks': tasks, 'role': str(my_profile)})
 
 @login_required
 def event_detail(request, id):
@@ -203,3 +242,58 @@ def event_detail(request, id):
 def task_detail(request, id):
     my_task = Task.objects.get(id=id)
     return render(request, 'task_detail.html', {'my_task': my_task})
+
+# @login_required
+# def add_event(request):
+#     if request.method == 'POST':
+#         form = EventForm(request.POST)
+#         if form.is_valid():
+#             event = Event(
+#                 creator=User.objects.get(auth_user_id=request.user.id),
+#                 name=form.cleaned_data['event_name'],
+#                 context=form.cleaned_data['event_description'],
+#                 begin_time=form.cleaned_data['begin_time'],
+#                 end_time=form.cleaned_data['end_time'],
+#                 event_adress=form.cleaned_data['adress']
+#             )
+#             event.save()
+#             return redirect('event')
+#     else:
+#         form = EventForm()
+#     return render(request, 'add_event.html', {'form': form})
+
+# @login_required
+# def change_event(request, id):
+#     event = Event.objects.get(id=id)
+#     form = EventForm(request.GET or None)
+#     if request.method == 'POST':
+#         form = EventForm(request.POST)
+#         if form.is_valid():
+#             event = Event(
+#                 creator=User.objects.get(auth_user_id=request.user.id),
+#                 name=form.cleaned_data['event_name'],
+#                 context=form.cleaned_data['event_description'],
+#                 begin_time=form.cleaned_data['begin_time'],
+#                 end_time=form.cleaned_data['end_time'],
+#                 event_adress=form.cleaned_data['adress']
+#             )
+#             event.save()
+#             return redirect('event')
+#     else:
+#         form = EventForm(request.GET)
+#     # if request.method == 'POST':
+#     #     form = EventForm(request.POST)
+#     #     if form.is_valid():
+#     #         event = Event(
+#     #             creator=User.objects.get(auth_user_id=request.user.id),
+#     #             name=form.cleaned_data['event_name'],
+#     #             context=form.cleaned_data['event_description'],
+#     #             begin_time=form.cleaned_data['begin_time'],
+#     #             end_time=form.cleaned_data['end_time'],
+#     #             event_adress=form.cleaned_data['adress']
+#     #         )
+#     #         event.save()
+#     #         return redirect('event')
+#     # else:
+#     #     form = EventForm()
+#     return render(request, 'change_event.html', {'form': form})

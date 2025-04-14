@@ -1,19 +1,15 @@
 {% extends "common/base.html" %}
 {% block title%}Події{%endblock%}
 {% block content%}
-    <header>
-        <p>Мої події</p>
-    </header>
-    <nav>
-        <a href="/calendar">До календаря</a>
-        <p><a href="{% url 'event' %}">До подій та завдань</a></p>
-    </nav>
-    <article>
-        <p>Event detail</p>
-        <p>name: {{ my_event.name }}</p>
-        <p>begin_time: {{ my_event.begin_time }}</p>
-        <p>end_time: {{ my_event.end_time }}</p>
-        <p>context: {{ my_event.context }}</p>
-        <p>event address: {{ my_event.event_adress }}</p>
-    </article>
+    <h1>Event detail</h1>
+    <p>name: {{ my_event.name }}</p>
+    <p>begin_time: {{ my_event.begin_time }}</p>
+    <p>end_time: {{ my_event.end_time }}</p>
+    <p>context: {{ my_event.context }}</p>
+    <p>event address: {{ my_event.event_adress }}</p>
+    {% if role != 'parent' %}
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <a href="/calendar/event/{{ event.id }}" style="text-decoration: none; color: white;">Створити подію або завдання</a>
+        </button>
+    {% endif %}
 {%endblock%}
