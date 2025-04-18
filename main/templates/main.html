@@ -5,9 +5,9 @@
 
 <img src="{% static 'Mantiplex_my_logo_pretentent.png' %}" alt="іконка" style="float:left;width:90px;height:90px;">
 <h2 style=color:#FDEAE0>Mantiplex</h2> 
-{% if not request.user.is_authenticated %}
+{% if not user %}
   <button type="button" class="button button1"><a href="/register" style="left: 4cm;">Реєстрація</a></button>
-{% elif request.user.is_authenticated %}
+{% else %}
   <button type="button" class="button button1"><a href="/login" style="left: 2cm;">Логін</a></button>
 {% endif %}
 

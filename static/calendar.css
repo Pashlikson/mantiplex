@@ -12,3 +12,6 @@
     color: rgb(255, 255, 255);
 }
 
+#calendar .cell-hover:hover .control-box  {
+    display: block !important;
+}

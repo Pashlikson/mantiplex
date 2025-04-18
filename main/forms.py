@@ -34,3 +34,9 @@ class EventForm(forms.Form):
         choices=[(0, 'Personal event'), (1, 'School event'), (2, 'Parent meeting')],
     )
     
+class TaskForm(forms.Form):
+    name = forms.CharField(label="Event Name", max_length=100)
+    start_date = forms.DateField(label="Start Date", widget=forms.DateInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(label="End Date", widget=forms.DateInput(attrs={'type': 'date'}))
+    context = forms.CharField(label="Context", widget=forms.Textarea)
+    

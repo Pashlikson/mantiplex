@@ -15,7 +15,8 @@ from .validators import profile_validation, redirect_profile_by_role,\
                         student_validation, parent_check, teacher_validation
 from .decorators import unauthanticated_user
 from .utils import HexLetterConventor, ConvertDatetime, filter_by_role
-from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm, EventForm
+from .forms import ProfileForm, StudentForm, ParentForm, TeacherForm, EventForm, TaskForm
+from .enums import TaskStatus
 
 # register views:
 @unauthanticated_user
@@ -140,9 +141,12 @@ def login_page(request):
 
 # main view
 def main_page(request):
+    """ Main page view """
+    user = User.objects.filter(auth_user_id=request.user.id).exists() == True
     convert = HexLetterConventor.convert_hex_into_cyrilic(hex_value='d093')
     return render(request, 'main.html', {
         'letter': convert,
+        'user': user,
     })
 
 # calendar views
@@ -161,6 +165,8 @@ def calendar_page(request):
     selected_days = ConvertDatetime.convert_current_day(selected_year, selected_month_index)
     is_selected_month_current = selected_month_index == current_month and selected_year == current_year
 
+    role = User.objects.get(auth_user_id=request.user.id).role
+
     form = EventForm(request.POST)
     return render(request, 'calendar_page.html', {
         'current_year': current_year, 
@@ -172,6 +178,7 @@ def calendar_page(request):
         'selected_days': selected_days,
         'is_selected_month_current': is_selected_month_current,
         'form': form,
+        'role':str(role),
         })
 
 # Your profile views
@@ -203,7 +210,7 @@ def event(request):
         #logic to create new event
         form = EventForm(request.POST)
         if form.is_valid():
-            event = Event(
+            new_event = Event(
             creator=User.objects.get(auth_user_id=request.user.id),
             name=form.cleaned_data['name'],
             begin_time=form.cleaned_data['start_date'],
@@ -212,7 +219,7 @@ def event(request):
             event_adress=form.cleaned_data['address'],
             event_status=form.cleaned_data['status']
             )
-            event.save()
+            new_event.save()
             return redirect('calendar')
         else:
             return redirect('calendar')
@@ -234,11 +241,50 @@ def event(request):
         'events.html', {'events': events, 'tasks': tasks, 'role': str(my_profile)})
 
 @login_required
+def task(request):
+    if request.method == 'POST':
+        #logic to create new event
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            new_task = Task(
+            creator=User.objects.get(auth_user_id=request.user.id),
+            name=form.cleaned_data['name'],
+            begin_time=form.cleaned_data['start_date'],
+            end_time=form.cleaned_data['end_date'],
+            context=form.cleaned_data['context'],
+            status='0',
+            )
+            new_task.save()
+            return redirect('calendar')
+        else:
+            return redirect('calendar')
+    elif request.method == 'PUT':
+        #logic to update event by id
+        pass
+    elif request.method == 'DELETE':
+        pass
+    elif request.method == 'GET':
+        if request.GET.get('id'):
+            pass
+        else:
+            pass
+
+@login_required
 def event_detail(request, id):
     my_event = Event.objects.get(id=id)
-    return render(request, 'event_detail.html', {'my_event': my_event})
+    if my_event.event_status == '0':
+        event_status = 'Personal event'
+    elif my_event.event_status == '1':
+        event_status = 'School event'
+    else:
+        event_status = 'Parent meeting'
+    return render(request, 'event_detail.html', {'my_event': my_event, 'event_status': event_status})
 
 @login_required
 def task_detail(request, id):
     my_task = Task.objects.get(id=id)
-    return render(request, 'task_detail.html', {'my_task': my_task})
+    if my_task.status == '0':
+        task_status = 'Undone'
+    else:
+        task_status = 'Done'
+    return render(request, 'task_detail.html', {'my_task': my_task, 'task_status': task_status})

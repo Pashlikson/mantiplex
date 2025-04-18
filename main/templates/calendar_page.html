@@ -2,7 +2,7 @@
 {% load static %}
 {% block title%}Main calendar{%endblock%}
 {% block content%}
-<link rel="stylesheet" href="{% static 'calendar.css' %}?v=1.13">
+<link rel="stylesheet" href="{% static 'calendar.css' %}?v=1.0">
 <div class="container my-4">
     <div id="calendar" class="text-center">
         <h1 class="display-5 text-center pt-2">
@@ -12,8 +12,8 @@
             <div class="d-inline-block">{{selected_month}} {{selected_year}}</div>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="mantiplex-next-month bi bi-arrow-right-square pointer" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-              </svg>
-              <button type="button" class="btn bth-info" ><a href="event/">Primary</a></button>
+            </svg>
+            <button type="button" class="btn btn-primary"><a href="event/" style="color: aliceblue;">Events</a></button>
         </h1>
         <table class="table">
             <thead>
@@ -28,12 +28,22 @@
                     <tr>
                         {% for day in week %}
                             <td 
-                                class="mantiplex-calendar-day {% if day %}cell-hover{% else %}border-0{% endif %}{% if is_selected_month_current and day == current_day %} mantiplex-current-day-cell{% endif %} fs-4 border text-center"
-                                data-bs-toggle='modal' 
-                                data-bs-target='#exampleModal'
+                                class="events p-0 position-relative {% if day %}cell-hover{% else %}border-0{% endif %}{% if is_selected_month_current and day == current_day %} mantiplex-current-day-cell{% endif %} fs-4 border text-center"
                                 data-selected-day="{{ day }}"
                                 data-selected-month="{{ selected_month }}">
                                 <p>{{ day }}</p>
+                                {% if role != 'parent' %}
+                                  {% if day %}
+                                  <div class="control-box d-none position-absolute top-0 end-0"
+                                  data-bs-toggle='modal' 
+                                  data-bs-target='#exampleModal'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square mantiplex-calendar-day" viewBox="0 0 16 16">
+                                      <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                    </svg>
+                                  </div>
+                                  {% endif %}
+                                {% endif %}
                             </td>
                         {% endfor %}
                     </tr>
@@ -41,71 +51,132 @@
             </tbody>
         </table>
     </div>
+
+    {% if role != 'parent' %}
     <!-- modal for events -->
     <div class="modal fade modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
+              {% if role == 'teacher' %}
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Create an event or task</h1>
+              {% else %}
               <h1 class="modal-title fs-5" id="exampleModalLabel">Create an event</h1>
+              {% endif %}
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form action="{% url 'event' %}" method="post">
-                {% csrf_token %}
-                <div class="row mb-3">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label">Event Name</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="colFormLabel" placeholder="Name of event" name="name" required>
-                  </div>
+              
+                {% if role == 'teacher' %}
+                <ul class="nav nav-tabs" id="eventTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="create-tab" data-bs-toggle="tab" data-bs-target="#create-form" type="button" role="tab" aria-controls="create-form" aria-selected="true">Create Event</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit-form" type="button" role="tab" aria-controls="edit-form" aria-selected="false">Create Task</button>
+                  </li>
+                </ul>
+                <div class="tab-content pt-3" id="eventTabContent">
+                {% endif %}
+              
+                <!-- Create Event Form -->
+                <div class="tab-pane fade show active" id="create-form" role="tabpanel" aria-labelledby="create-tab">
+                  <form action="{% url 'event' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                      <label for="eventName" class="col-sm-2 col-form-label">Event Name</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="eventName" placeholder="Name of event" name="name" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="eventStatus" class="col-sm-2 col-form-label">Event Status</label>
+                      <div class="col-sm-10">
+                        <select class="form-select" id="eventStatus" name="status" required>
+                          <option value="Personal event" selected>Personal event</option>
+                          <option value="School event">School event</option>
+                          <option value="Parent meeting">Parent meeting</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="beginTime" class="col-sm-2 col-form-label">Begin Date</label>
+                      <div class="col-sm-10">
+                        <input type="date" class="form-control" id="beginTime" name="start_date" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="endTime" class="col-sm-2 col-form-label">End Date</label>
+                      <div class="col-sm-10">
+                        <input type="date" class="form-control" id="endTime" name="end_date" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="eventAddress" class="col-sm-2 col-form-label">Event Address</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="eventAddress" placeholder="Event address" name="address" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="eventAddress" class="col-sm-2 col-form-label">Link</label>
+                      <div class="col-sm-10">
+                        <input type="url" class="form-control" id="eventAddress" placeholder="Link" name="address">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="context" class="col-sm-2 col-form-label">Description</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" id="context" placeholder="Event context" name="context" rows="3" required></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <input type="submit" value="Create event" class="btn btn-primary">
+                    </div>
+                  </form>
                 </div>
-                <div class="row mb-3">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label">Status</label>
-                  <div class="col-sm-10">
-                    <select class="form-select col-sm-10" id="inputGroupSelect02" name="status" required>
-                      <option selected value="0">Personal event</option>
-                      <option value="1">School event</option>
-                      <option value="2">Parent meeting</option>
-                    </select>
-                  </div>
+                
+                {% if role == 'teacher' %}
+                <!-- Edit Task Form -->
+                <div class="tab-pane fade" id="edit-form" role="tabpanel" aria-labelledby="edit-tab">
+                  <form action="{% url 'task' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                      <label for="eventName" class="col-sm-2 col-form-label">Event Name</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="eventName" placeholder="Name of event" name="name" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="beginTime" class="col-sm-2 col-form-label">Begin Date</label>
+                      <div class="col-sm-10">
+                        <input type="date" class="form-control" id="beginTime" name="start_date" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="endTime" class="col-sm-2 col-form-label">End Date</label>
+                      <div class="col-sm-10">
+                        <input type="date" class="form-control" id="endTime" name="end_date" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="context" class="col-sm-2 col-form-label">Description</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" id="context" placeholder="Event context" name="context" rows="3" required></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <input type="submit" value="Create event" class="btn btn-primary">
+                    </div>
+                  </form>
                 </div>
-                <div class="row mb-3">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label">Start date</label>
-                  <div class="col-sm-10">
-                    <input type="date" class="form-control" id="colFormLabel" placeholder="col-form-label" name="start_date" required>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label">End date</label>
-                  <div class="col-sm-10">
-                    <input type="date" class="form-control" id="colFormLabel" placeholder="col-form-label" name="end_date" required>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label">Event Adress</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="colFormLabel" placeholder="Event adress" name="address">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label">Link</label>
-                  <div class="col-sm-10">
-                    <input type="url" class="form-control" id="colFormLabel" placeholder="Event link" name="address" pattern="https?://.+">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="colFormLabel" class="col-sm-2 col-form-label">Description</label>
-                  <div class="col-sm-10">
-                    <textarea class="form-control" id="colFormLabel" placeholder="Event context" name="context" rows="3" required></textarea>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <input type="submit" value="Create event" class="btn btn-primary" data-bs-dismiss="modal">
-                </div>
-              </form>
+                {% endif %}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    <script src="{% static 'calendar.js' %}"></script>
+    {% endif %}
+    <script src="{% static 'calendar.js' %}?v=0.0101"></script>
 {%endblock%}

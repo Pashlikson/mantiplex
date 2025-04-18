@@ -7,9 +7,5 @@
     <p>end_time: {{ my_event.end_time }}</p>
     <p>context: {{ my_event.context }}</p>
     <p>event address: {{ my_event.event_adress }}</p>
-    {% if role != 'parent' %}
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <a href="/calendar/event/{{ event.id }}" style="text-decoration: none; color: white;">Створити подію або завдання</a>
-        </button>
-    {% endif %}
+    <p>event status: {{ event_status }}</p>
 {%endblock%}
