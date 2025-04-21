@@ -2,7 +2,7 @@
 {% load static %}
 {% block title%}Main calendar{%endblock%}
 {% block content%}
-<link rel="stylesheet" href="{% static 'calendar.css' %}?v=1.0">
+<link rel="stylesheet" href="{% static 'css/calendar.css' %}?v=1.0">
 <div class="container my-4">
     <div id="calendar" class="text-center">
         <h1 class="display-5 text-center pt-2">
@@ -28,15 +28,17 @@
                     <tr>
                         {% for day in week %}
                             <td 
-                                class="events p-0 position-relative {% if day %}cell-hover{% else %}border-0{% endif %}{% if is_selected_month_current and day == current_day %} mantiplex-current-day-cell{% endif %} fs-4 border text-center"
-                                data-selected-day="{{ day }}"
-                                data-selected-month="{{ selected_month }}">
+                                class="events p-0 position-relative {% if day %}cell-hover{% else %}border-0{% endif %}
+                                      {% if is_selected_month_current and day == current_day %} mantiplex-current-day-cell{% endif %}
+                                      fs-4 border text-center selected-day"
+                                data-selected-date="{{ selected_year_month }}-{{day}}"
+                                data-bs-toggle="modal" data-bs-target="#eventList">
                                 <p>{{ day }}</p>
                                 {% if role != 'parent' %}
                                   {% if day %}
                                   <div class="control-box d-none position-absolute top-0 end-0"
                                   data-bs-toggle='modal' 
-                                  data-bs-target='#exampleModal'>
+                                  data-bs-target='#addEvent'>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square mantiplex-calendar-day" viewBox="0 0 16 16">
                                       <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
                                       <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
@@ -54,7 +56,7 @@
 
     {% if role != 'parent' %}
     <!-- modal for events -->
-    <div class="modal fade modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade modal-lg" id="addEvent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -178,5 +180,39 @@
         </div>
       </div>
     {% endif %}
-    <script src="{% static 'calendar.js' %}?v=0.0101"></script>
+    
+    <div class="modal fade modal-lg" id="eventList" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">All events and tasks for this {{ selected_year_month }}</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="text-center pt-3">
+              <div class="list-group">
+                <a class="list-group-item list-group-item-action active">
+                  <h5>Events</h5>
+                </a></div>
+              <div id="events-container">
+              </div>
+            </div>
+            <div class="text-center pt-5">
+              <div class="list-group">
+                <a class="list-group-item list-group-item-action active">
+                  <h5>Tasks</h5>
+                </a></div>
+              <div id="tasks-container">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'js/calendar.js' %}?v=0.1"></script>
 {%endblock%}

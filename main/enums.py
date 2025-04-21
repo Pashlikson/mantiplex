@@ -1,5 +1,4 @@
 from enum import Enum
-from .utils import HexLetterConventor
 
 class UserRole(str, Enum):
     STUDENT = 'Student'

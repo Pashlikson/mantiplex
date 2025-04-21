@@ -5,8 +5,9 @@ from main.models.user import User
 from main.models.parent import Parent
 from .utils import get_grade_by_start_year
 
-# Validators:
+# Register Validators:
 def profile_validation(form) -> bool:
+    """check if user has correct data"""
     
     def check_for_forbidden_name(str_field):
         forbidden_names = ['hitler', 'stalin', 'lenin', 'putin', 'moron', 'russia', 'kim_chen_in', 'kill', 'penis', 'bra', 'dictator', 'hate', 'devil', 'satan']
@@ -62,6 +63,7 @@ def profile_validation(form) -> bool:
     return True
 
 def student_validation(form, main_user) -> bool:
+    """check if student has correct data"""
     
     def check_class_to_age():
         class_school = School_class.objects.get(id=form.cleaned_data['school_class'].id)
@@ -96,6 +98,7 @@ def student_validation(form, main_user) -> bool:
     return True
 
 def parent_check(form) -> bool:
+    """check if parent has correct data"""
     
     def check_teacher():
         if str(form.cleaned_data['job']).strip().lower() == 'teacher':
@@ -107,6 +110,7 @@ def parent_check(form) -> bool:
     return True
 
 def teacher_validation(form, main_user) -> bool:
+    """check if teacher has correct data"""
     
     def employment_year_check():
         employment_year = int(form.cleaned_data['employment_year'])
@@ -132,8 +136,28 @@ def teacher_validation(form, main_user) -> bool:
         return False
     return True
 
+# Create event or task validators:
+def check_date(form) -> bool:
+    """check if begin date is not later than the end date"""
+
+    begin_time = str(form.cleaned_data['start_date']).strip().split('-')
+    end_time = str(form.cleaned_data['end_date']).strip().split('-')
+    begin_date = [int(begin_time[0]), int(begin_time[1]), int(begin_time[2])]
+    end_date = [int(end_time[0]), int(end_time[1]), int(end_time[2])]
+    current_date = [localtime()[0], localtime()[1], localtime()[2]]
+
+    if (current_date[0], current_date[1], current_date[2]) > (begin_date[0], begin_date[1], begin_date[2]):
+        return False
+    if (current_date[0], current_date[1], current_date[2]) > (end_date[0], end_date[1], end_date[2]):
+        return False
+    if (begin_date[0], begin_date[1], begin_date[2]) > (end_date[0], end_date[1], end_date[2]):
+        return False
+    return True
+
 # Redirects:
 def redirect_profile_by_role(form) -> str:
+    """redirect user, depending on role """
+
     role = str(form.cleaned_data.get('role')).strip()
     if role == 'student':
         return 'student'

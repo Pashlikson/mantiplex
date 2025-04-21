@@ -2,7 +2,7 @@ from django import forms
 from main.models.role import Role
 from main.models.student import School_class
 from main.models.parent import Parent
-from main.enums import TeacherSubject
+from main.enums import TeacherSubject, EventStatus
 
 class ProfileForm(forms.Form):
     first_name = forms.CharField(label='Your name', max_length=100)
@@ -29,10 +29,7 @@ class EventForm(forms.Form):
     end_date = forms.DateField(label="End Date", widget=forms.DateInput(attrs={'type': 'date'}))
     context = forms.CharField(label="Context", widget=forms.Textarea)
     address = forms.CharField(label="Address", max_length=255)
-    status = forms.ChoiceField(
-        label="Status",
-        choices=[(0, 'Personal event'), (1, 'School event'), (2, 'Parent meeting')],
-    )
+    status = forms.ChoiceField(label="Event status", choices=EventStatus.choices())
     
 class TaskForm(forms.Form):
     name = forms.CharField(label="Event Name", max_length=100)

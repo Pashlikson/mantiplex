@@ -34,7 +34,6 @@ class HexLetterConventor:
         else:
             cyrilic_result = codecs.decode(hex_value, 'hex').decode('utf-8')
             return cyrilic_result
-    
 
 def filter_by_role(user_id):
     from .models.user import User
@@ -51,8 +50,7 @@ def filter_by_role(user_id):
         return {'user': user, 'role_user': role_user}
     if str(user.role) == 'student':
         role_user = Student.objects.get(user=user.id)
-        return {'user': user, 'role_user': role_user}
-    
+        return {'user': user, 'role_user': role_user}    
 
 class ConvertDatetime:
     def convert_current_day(year: int, month: int) -> list:
@@ -80,27 +78,3 @@ class ConvertDatetime:
             10: 'Жовтень', 11: 'Листопад', 12: 'Грудень'
         }
         return months.get(month, ' ')
-
-    def return_year_like_list(year):
-        months = ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень']
-    
-        month_data = []
-        
-        for month in range(1, 13):
-            first_day_of_month, num_days_in_month = calendar.monthrange(year, month)
-            
-            weeks = []
-            week = [' ']*first_day_of_month  
-            
-            for day in range(1, num_days_in_month + 1):
-                week.append(day)
-                if len(week) == 7:  
-                    weeks.append(week)
-                    week = []
-            
-            if week:
-                weeks.append(week + [' '] * (7 - len(week)))  
-            
-            month_data.append(weeks)
-        
-        return months, month_data
