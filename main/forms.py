@@ -29,8 +29,9 @@ class EventForm(forms.Form):
     end_date = forms.DateField(label="End Date", widget=forms.DateInput(attrs={'type': 'date'}))
     context = forms.CharField(label="Context", widget=forms.Textarea)
     address = forms.CharField(label="Address", max_length=255)
+    url_address = forms.CharField(label="url_address")
     status = forms.ChoiceField(label="Event status", choices=EventStatus.choices())
-    
+
 class TaskForm(forms.Form):
     name = forms.CharField(label="Event Name", max_length=100)
     start_date = forms.DateField(label="Start Date", widget=forms.DateInput(attrs={'type': 'date'}))

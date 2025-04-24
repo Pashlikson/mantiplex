@@ -1,16 +1,10 @@
 {% extends "common/base.html" %}
 {% block title%}Користувачі{%endblock%}
 {% block content%}
-    <header>
-        <p>Користувачі</p>
-    </header>
-    <nav>
-        <a href="/calendar">До календаря</a>
-    </nav>
+    <h1>Користувачі</h1>
     <article>
-        <p>here will be an list of users</p>
         {% for user in users %}     
-          <a href="{{ user.id }}">
+        <a href="{{ user.id }}">
             <p class="lead">
                 {{ user.first_name }}
                 {{ user.last_name }}

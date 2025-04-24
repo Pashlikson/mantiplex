@@ -1,5 +1,6 @@
 """File contains views for the main app of the project. 
 It includes views for user registration, profile management, login,"""
+# pylint: disable=E1101
 
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
@@ -29,14 +30,15 @@ def register_page(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user_form = form.save()
+            form.save()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('profile')
         else:
-            return render(request, 'profile.html', {'form': form, 'errors': form.errors})
+            messages.error(request, form.errors if form.errors else 'Form was filled incorrectly!')
+            return render(request, 'profile.html', {'form': form})
     else:
         form = UserCreationForm()
     return render(request, 'register_page.html', {
@@ -59,8 +61,8 @@ def profile(request):
             main_user.save()
             return redirect(redirect_profile_by_role(form))
         else:
-            message = 'Form(s) were filled incorrectly!'
-            return render(request, 'profile.html', {'form': form, 'message': message, 'errors': form.errors})
+            messages.error(request, form.errors if form.errors else 'Form was filled incorrectly!')
+            return render(request, 'profile.html', {'form': form})
     else:
         form = ProfileForm()
     return render(request, 'profile.html', {'form': form})
@@ -75,15 +77,16 @@ def student_profile(request):
             student = Student(user=main_user,
                               school_class=form.cleaned_data['school_class'],
                               first_guardian=form.cleaned_data['first_guardian'],
-                              second_guardian=form.cleaned_data['second_guardian'])      
+                              second_guardian=form.cleaned_data['second_guardian'])
             student.save()
             my_group = Group.objects.get(name='Student')
             my_group.user_set.add(request.user.id)
+            messages.success(request, 'User was created successfully!')
             return redirect('main')
         else:
             print(student_validation(form, main_user))
-            message = 'Form(s) were filled incorrectly!'
-            return render(request, 'student_profile.html', {'form': form, 'message': message, 'errors': form.errors})
+            messages.error(request, form.errors if form.errors else 'Form was filled incorrectly!')
+            return render(request, 'student_profile.html', {'form': form})
     else:
         form = StudentForm()
     return render(request, 'student_profile.html', {'form': form})
@@ -96,19 +99,17 @@ def parent_profile(request):
         if form.is_valid():
             main_user = User.objects.get(auth_user_id=request.user.id)
             parent = Parent(user=main_user,
-                             job=form.cleaned_data['job'])     
+                             job=form.cleaned_data['job'])
             parent.save()
             my_group = Group.objects.get(name='Parent')
             my_group.user_set.add(request.user.id)
             if not parent_check(form):
                 return redirect('teacher')
+            messages.success(request, 'User was created successfully!')
             return redirect('main')
         else:
-            message = 'Form(s) were filled incorrectly!'
-            return render(request, 'parent_profile.html', {
-                'form': form, 
-                'message': message, 
-                'errors': form.errors})
+            messages.error(request, form.errors if form.errors else 'Form was filled incorrectly!')
+            return render(request, 'parent_profile.html', {'form': form, })
     else:
         form = ParentForm()
     return render(request, 'parent_profile.html', {'form': form})
@@ -121,15 +122,16 @@ def teacher_profile(request):
         main_user = User.objects.get(auth_user_id=request.user.id)
         if form.is_valid() and teacher_validation(form, main_user):
             teacher = Teacher(user=main_user,
-                              subject=form.cleaned_data['subject'],      
+                              subject=form.cleaned_data['subject'],
                               employment_year=form.cleaned_data['employment_year'])
             teacher.save()
             my_group = Group.objects.get(name='Teacher')
             my_group.user_set.add(request.user.id)
+            messages.success(request, 'User was created successfully!')
             return redirect('main')
         else:
-            message = 'Form(s) were filled incorrectly!'
-            return render(request, 'teacher_profile.html', {'form': form, 'message': message, 'errors': form.errors})
+            messages.error(request, form.errors if form.errors else 'Form was filled incorrectly!')
+            return render(request, 'teacher_profile.html', {'form': form})
     else:
         form = TeacherForm()
     return render(request, 'teacher_profile.html', {'form': form})
@@ -143,8 +145,10 @@ def login_page(request):
         user = authenticate(request, password=password, username=username)
         if user is not None:
             login(request, user)
+            messages.success(request, 'Event was created successfully!')
             return redirect('calendar')
         else:
+            messages.error(request, 'Login was failed!')
             return redirect('login')
     else:
         return render(request, 'login_page.html')
@@ -183,7 +187,7 @@ def calendar_page(request):
     role = User.objects.get(auth_user_id=request.user.id).role
 
     form = EventForm(request.POST)
-    return render(request, 'calendar_page.html', {
+    return render(request, 'calendar_page_html/calendar_page.html', {
         'current_year': current_year, 
         'current_month': ConvertDatetime.convert_months(current_month), 
         'current_day': current_day,
@@ -232,21 +236,25 @@ def event(request):
         #logic to create new event
         form = EventForm(request.POST)
         if form.is_valid() and check_date(form):
-            new_event = Event(
-            creator=User.objects.get(auth_user_id=request.user.id),
-            name=form.cleaned_data['name'],
-            begin_time=form.cleaned_data['start_date'],
-            end_time=form.cleaned_data['end_date'],
-            context=form.cleaned_data['context'],
-            event_adress=form.cleaned_data['address'],
-            event_status=form.cleaned_data['status'],
-            )
-            new_event.save()
-            messages.success(request, 'Event was created successfully!')
-            return redirect('calendar')
-        else:
-            messages.error(request, form.errors if form.errors else 'Form(s) were filled incorrectly!')
-            return redirect('calendar')
+            if form.cleaned_data['url_adress'] is None or form.cleaned_data['adress'] is None:
+                messages.error(request, 'Event adress and link must be filled!')
+                redirect('calendar')
+            else:
+                new_event = Event(
+                creator=User.objects.get(auth_user_id=request.user.id),
+                name=form.cleaned_data['name'],
+                begin_time=form.cleaned_data['start_date'],
+                end_time=form.cleaned_data['end_date'],
+                context=form.cleaned_data['context'],
+                event_adress=form.cleaned_data['address'],
+                event_url_adress=form.cleaned_data['url_address'],
+                event_status=form.cleaned_data['status'],
+                )
+                new_event.save()
+                messages.success(request, 'Event was created successfully!')
+                return redirect('calendar')
+        messages.error(request, form.errors if form.errors else 'Form was filled incorrectly!')
+        return redirect('calendar')
     elif request.method == 'PUT':
         pass
     elif request.method == 'DELETE':
@@ -277,7 +285,9 @@ def task(request):
             status='0',
             )
             new_task.save()
+            messages.success(request, 'Task was created successfully!')
             return redirect('calendar')
+        messages.error(request, form.errors if form.errors else 'Form was filled incorrectly!')
         return redirect('calendar')
     if request.method == 'PUT':
         #logic to update event by id

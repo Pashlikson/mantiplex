@@ -9,7 +9,8 @@ class Event(models.Model):
     begin_time = models.DateField(blank=False, default=now)
     end_time = models.DateField(blank=False)
     context = models.CharField(max_length=325)
-    event_adress = models.CharField(blank=True, default='-')
+    event_adress = models.CharField(blank=True)
+    event_url_adress = models.CharField(blank=True)
     event_status = models.CharField(choices=EventStatus.choices)
 
     def __str__(self):
