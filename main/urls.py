@@ -1,8 +1,22 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.main_page, name='main_page'),
-    path('login/', views.login_page, name='login_page')
+    path('', views.main_page, name='main'),
+    path('login/', views.login_page, name='login'),
+    path('accounts/login/', views.login_page, name='another_login'),
+    path('profile/', views.profile, name='profile'),
+    path('profile/student/', views.student_profile, name='student'),
+    path('profile/parent/', views.parent_profile, name='parent'),
+    path('profile/teacher/', views.teacher_profile, name='teacher'),
+    path('register/', views.register_page, name='register'),
+    path('calendar/', views.calendar_page, name='calendar'),
+    path('calendar/your_profile/', views.profile_page, name='profile_page'),
+    path('calendar/users/', views.users, name='users'),
+    path('calendar/users/<int:id>/', views.user_profile, name='user_profile'),
+    path('calendar/event/', views.event, name='event'),
+    path('calendar/event/<int:id>/', views.event_detail, name='event_detail'),
+    path('calendar/event/list', views.event_list, name='event_detail'),
+    path('calendar/task/', views.task, name='task'),
+    path('calendar/task/<int:id>/', views.task_detail, name='task_detail'),
 ]

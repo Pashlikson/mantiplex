@@ -6,22 +6,51 @@ django's commands to custon our project.\
 Right down is a list of a django basic codes, that every should know:\
 ```You must read this article to get work with django project!!!```
 
-## How to use django?
+## How to get django project from repository?
+First make sure, you're in vs code and you have installed git
+
+### Claim the project from GitHub:
+1. first you click 'code <>' button and copy the url, that will display in
+
+2. then you find the folder, where you want to paste project in\
+ then click the right mouse and in created widget click button 'Git Bash Here', this will create a new Git terminal
+
+3. in terminal you write 'git clone "cloned url from repository"'
+
+this actions will install a latest version of our project
 
 ### To run project you need:
-1. insatall dependency
-```bash
-pip install
+1. setup virtual environment
 ```
+#windows
+python -m venv venv
+
+.\venv\Scripts\activate
+
+#MacOS/Linux
+python -m venv venv
+
+source venv/bin/activate
+```
+
+2. insatall dependency
+```
+pip install -r requirements.txt
+```
+
 2. pull the github project
-```bash
+```
 git pull origin main 
 ```
 
 3. run django site
-```bash
+```
 python manage.py runserver
 ```
+
+And now, you will have a git bar you need
+
+## How to use django project?
 
 ### To run a pulled project(means you can configure the project):
 1. just run project with this command
@@ -32,7 +61,7 @@ python manage.py runserver
 
 
 ### Static files code:
-1. after configuring static files you should run this code to get style changed
+1. after configuring static files you should run this code to get style changed (when DEBUG = False)
 ```bash
 python manage.py collectstatic
 ``` 
@@ -40,7 +69,7 @@ python manage.py collectstatic
 ### Models code:
 1. after configuring models.py file in app you should run this code to change models properties
 ```bash
-python manage.py makemigrations
+ python manage.py makemigrations --name <changed_my_model>
 ``` 
 2. in second, you have to run this command to get models change
 ```bash
@@ -54,16 +83,44 @@ python manage.py createsuperuser
 ```
 2. you have to write down an username, email and password
 
-## Tasks, you must perform before 9-th may!!!
-1. Create a database in own device:\
-    1-st: install PostgreSQL\
-    2-nd: create a database named "mantiplex"\
-    3-rd: create a "users", "events" and "tasks" table\
-    4-th: create roles and interactions with tables in database.
+### Mark tasks:
+In file, you can set tasks for later work, to not forget, what you want to.
 
-2. Change a main.html file to change a main page
+1. To set a task, you have to write down code above:
 
-3. Read this article and remember codes, it's very important!!!
+in python file:
+```bash
+...python code #//TODO: task_description
+```
+2. in search write down 'TODO' and you will find all tasks
+
+## Django commits:
+
+## Meeting notus for 21 march (Actual before 31 march (31.03.2025))
+
+1. Danylo have expanded workout range (all backend, code takeout and frontend and ).
+
+2. Tasks:\
+- For ```Nadya Hordei``` and ```Anna Rotar```
+(Frontend coders): crate look of all the site pages and think, how to let ```Shevchenko Olexsandra``` for work on project.
+
+- For ```Danylo Onchul```(Backend coder): create all base functions and take on myself database work.
+
+- Deadline: all must be done before 31 march.
+
+3. The site structure will oriented on this site: https://sites.google.com/view/my-ideas-for-command-project/%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0-%D1%81%D1%82%D0%BE%D1%80%D1%96%D0%BD%D0%BA%D0%B0
+
+## Meeting notus for 28 march
+
+1. Pavlo Petrovych will send pages for you, ```Hordei Nadya``` and ```Anna Rotar```
+
+2. ```Shevchenko Olexandra``` will work in IT cabinet on school
+
+3. Tasks for our project is in [Grade criteria](https://docs.google.com/document/d/1jGJefZRTWWfKG_7RqIrMCTUdL4VjPzPFYqEYC8TbG4Y/edit?tab=t.0) for healthy work, here will be criteria to check later.
+
+4. If frontend needs speed up to high, ```Danylo Onchul``` will help in frontend
+
+5. ```In few days, Shevchenko Olexandra, Hordei Nadya and Anna Rotar, you have to learn, how to connect and use git programm to be able to pull and push our project and commit changes```
 
 ## GitHub instruction:
 You can go in this link to get an important git commands:\

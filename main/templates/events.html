@@ -1,0 +1,21 @@
+{% extends "common/base.html" %}
+{% block title%}Події та завдання{%endblock%}
+{% block content%}
+    <h3 class="pt-3">here will be an event</h3>
+    {% for event in events %}
+        {% if event.creator.auth_user_id_id == request.user.id %}
+            <p><a href="{{ event.id }}">{{ event.name }}: {{ event.begin_time }} - {{ event.end_time }}</a></p>
+        {% else %}
+            <p>{{ event.name }}: {{ event.begin_time }} - {{ event.end_time }}</p>
+        {% endif %}
+    {% endfor %}
+    <h3 class="pt-3">here will be an task</h3>
+    {% for task in tasks %}
+        {% if task.creator.auth_user_id_id == request.user.id %}
+            <p><a href="/calendar/task/{{ task.id }}">{{ task.name }}: {{ task.begin_time }} - {{ task.end_time }}</a></p>
+        {% else %}
+            <p>{{ task.name }}: {{ task.begin_time }} - {{ task.end_time }}</p>
+        {% endif %}
+    {% endfor %}
+    {{task_status}}
+{%endblock%}

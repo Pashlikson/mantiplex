@@ -1,0 +1,17 @@
+#calendar .cell-hover:hover {
+    cursor: pointer;
+    background-color: rgb(211, 211, 211);
+}
+
+#calendar td {
+    height: 14dvh;
+}
+
+#calendar .mantiplex-current-day-cell {
+    background-color: rgb(65, 105, 225);
+    color: rgb(255, 255, 255);
+}
+
+#calendar .cell-hover:hover .control-box  {
+    display: block !important;
+}

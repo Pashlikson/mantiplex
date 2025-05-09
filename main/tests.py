@@ -1,3 +1,10 @@
 from django.test import TestCase
+import unittest
 
-# Create your tests here.
+class Test(unittest.TestCase):
+    def setUp(self):
+        self.month = ''
+
+    def test_(self):
+        pass
+

@@ -1,0 +1,170 @@
+{% load static %}
+{% if role != 'parent' %}
+<!-- modal for events -->
+  <div class="modal fade modal-lg" id="addEvent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        {{ddd}}
+        <div class="modal-header">
+          {% if role == 'teacher' %}
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Create an event or task</h1>
+          {% else %}
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Create an event</h1>
+          {% endif %}
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+            {% if role == 'teacher' %}
+            <ul class="nav nav-tabs" id="eventTab" role="tablist">
+              <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="create-tab" data-bs-toggle="tab" data-bs-target="#create-form" type="button" role="tab" aria-controls="create-form" aria-selected="true">Create Event</button>
+              </li>
+              <li class="nav-item" role="presentation">
+              <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit-form" type="button" role="tab" aria-controls="edit-form" aria-selected="false">Create Task</button>
+              </li>
+            </ul>
+            <div class="tab-content pt-3" id="eventTabContent">
+            {% endif %}
+          
+            <!-- Create Event Form -->
+            <div class="tab-pane fade show active" id="create-form" role="tabpanel" aria-labelledby="create-tab">
+              <form action="{% url 'event' %}" method="post">
+                {% csrf_token %}
+                <div class="row mb-3">
+                  <label for="eventName" class="col-sm-2 col-form-label">Event Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="eventName" placeholder="Name of event" name="name" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="eventStatus" class="col-sm-2 col-form-label">Event Status</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" id="eventStatus" name="status" required>
+                      <option value="Personal event" selected>Personal event</option>
+                      <option value="School event">School event</option>
+                      <option value="Parent meeting">Parent meeting</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="beginTime" class="col-sm-2 col-form-label">Begin Date</label>
+                  <div class="col-sm-10">
+                    <input type="date" class="form-control" id="beginTime" name="start_date" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="endTime" class="col-sm-2 col-form-label">End Date</label>
+                  <div class="col-sm-10">
+                    <input type="date" class="form-control" id="endTime" name="end_date" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="eventAddress" class="col-sm-2 col-form-label">Event Address</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="eventAddress" placeholder="Event address" name="address">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="eventAddress" class="col-sm-2 col-form-label">Link</label>
+                  <div class="col-sm-10">
+                    <input type="url" class="form-control" id="eventLink" placeholder="Link" name="url_adress">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="context" class="col-sm-2 col-form-label">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" id="context" placeholder="Event context" name="context" rows="3" required></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <input type="submit" value="Create event" class="btn btn-primary">
+                </div>
+              </form>
+            </div>
+            
+            {% if role == 'teacher' %}
+            <!-- Create Task Form -->
+            <div class="tab-pane fade" id="edit-form" role="tabpanel" aria-labelledby="edit-tab">
+              <form action="{% url 'task' %}" method="post">
+                {% csrf_token %}
+                <div class="row mb-3">
+                  <label for="eventName" class="col-sm-2 col-form-label">Event Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="eventName" placeholder="Name of event" name="name" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="beginTime" class="col-sm-2 col-form-label">Begin Date</label>
+                  <div class="col-sm-10">
+                    <input type="date" class="form-control" id="beginTime" name="start_date" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="endTime" class="col-sm-2 col-form-label">End Date</label>
+                  <div class="col-sm-10">
+                    <input type="date" class="form-control" id="endTime" name="end_date" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="context" class="col-sm-2 col-form-label">Description</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" id="context" placeholder="Event context" name="context" rows="3" required></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <input type="submit" value="Create event" class="btn btn-primary">
+                </div>
+              </form>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<!-- Modal, that shows event and task list for that day -->
+<div class="modal fade modal-lg" id="eventList" tabindex="-1" aria-labelledby="exampleModalLabel" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">All events and tasks for this date</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="text-center pt-3">
+          <div class="list-group">
+            <a class="list-group-item list-group-item-action active">
+              <h5>Events</h5>
+            </a></div>
+          {% for event in events %}
+            {% if event.creator.auth_user_id_id == request.user.id %}
+              <div class="events-container">
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="text-center pt-5">
+          <div class="list-group">
+            <a class="list-group-item list-group-item-action active">
+              <h5>Tasks</h5>
+            </a></div>
+            {% if event.creator.auth_user_id_id == request.user.id %}
+              <div id="tasks-container">
+              </div>
+            {% endif %}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/calendar_htmlgenerator.js' %}?v=0.244"></script>

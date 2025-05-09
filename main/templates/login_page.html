@@ -1,12 +1,28 @@
-{% extends "base.html" %}
-{% block title %}Login page{% endblock %}
-{% block content %}
-<div class="carousel-inner">
-    <div class="center">
-        <p style="font-size: 2cm; color: #000;">
-            -------------------------------------------------------------
-            login: just create a login blank in a center of screen
-        </p> 
+{% extends "common/base.html" %}
+{% block title%}Login user{%endblock%}
+{% block content%}
+
+
+
+<form action="{% url 'login' %}" method=POST class="pt-5">
+  <h1>Login</h1>
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="usernameInput" class="form-label">Username</label>
+      <input type="text" class="form-control" name="username">
     </div>
-</div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input type="password" class="form-control" name="password">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% if form.errors %}
+ <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    There was an error with your form...
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+ </div>
+{% endif %}
+
 {% endblock %}

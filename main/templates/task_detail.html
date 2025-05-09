@@ -1,0 +1,11 @@
+{% extends "common/base.html" %}
+{% block title%}Завдання{%endblock%}
+{% block content%}
+    <h1>Task detail</h1>
+    <p>Task detail</p>
+    <p>name: {{ my_task.name }}</p>
+    <p>begin_time: {{ my_task.begin_time }}</p>
+    <p>end_time: {{ my_task.end_time }}</p>
+    <p>context: {{ my_task.context }}</p>
+    <p>status: {{ task_status }}</p>
+{%endblock%}

@@ -1,0 +1,20 @@
+{% extends "common/base.html" %}
+{% block title%}Користувачі{%endblock%}
+{% block content%}
+    <h1>Користувачі</h1>
+    <article>
+        {% for user in users %}     
+        <a href="{{ user.id }}">
+            <p class="lead">
+                {{ user.first_name }}
+                {{ user.last_name }}
+                {{ user.role }}
+            </p>
+        </a>
+        {% endfor %}
+    </article>
+    <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+{%endblock%}
